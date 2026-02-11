@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RE Solution - Sistema Integrado</title>
+
 <meta name="theme-color" content="#1e293b">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RE Solution - Versão Final</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -24,43 +25,89 @@
     --warning: #f59e0b;
   }
 
-  * { box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background-color: var(--bg-color); color: var(--text-color); overflow: hidden; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  body { 
+    font-family: 'Inter', sans-serif; 
+    margin: 0; 
+    display: flex; 
+    height: 100vh; 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    overflow: hidden; 
+  }
 
-  /* --- SIDEBAR --- */
-  .sidebar { width: 260px; background-color: var(--sidebar-bg); color: white; display: flex; flex-direction: column; padding: 20px; transition: 0.3s; flex-shrink: 0; }
-  .logo { font-size: 1.4rem; font-weight: 700; margin-bottom: 40px; color: var(--primary); display: flex; align-items: center; gap: 15px; padding-left: 10px; }
+  /* --- SIDEBAR (Desktop Padrão) --- */
+  .sidebar { 
+    width: 260px; 
+    background-color: var(--sidebar-bg); 
+    color: white; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 20px; 
+    transition: 0.3s; 
+    flex-shrink: 0; 
+    z-index: 100;
+  }
+  
+  .logo { 
+    font-size: 1.4rem; 
+    font-weight: 700; 
+    margin-bottom: 40px; 
+    color: var(--primary); 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding-left: 10px; 
+  }
   .logo span { color: white; }
   
-  .menu-btn { background: transparent; border: none; color: #94a3b8; padding: 16px 20px; text-align: left; cursor: pointer; font-size: 1rem; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: flex-start; gap: 15px; width: 100%; transition: 0.2s; }
+  .menu-btn { 
+    background: transparent; 
+    border: none; 
+    color: #94a3b8; 
+    padding: 14px 20px; 
+    text-align: left; 
+    cursor: pointer; 
+    font-size: 0.95rem; 
+    border-radius: 8px; 
+    margin-bottom: 5px; 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    width: 100%; 
+    transition: 0.2s; 
+  }
   .menu-btn:hover { background-color: #334155; color: white; }
   .menu-btn.active { background-color: var(--primary); color: white; font-weight: 600; }
-  .menu-btn i { width: 20px; text-align: center; }
+  .menu-btn i { width: 24px; text-align: center; font-size: 1.1rem; }
 
-  /* --- MAIN CONTENT --- */
-  .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-  .page { display: none; animation: fadeIn 0.3s ease-in-out; }
+  /* --- CONTEÚDO PRINCIPAL --- */
+  .main-content { flex: 1; padding: 30px; overflow-y: auto; overflow-x: hidden; position: relative; }
+  .page { display: none; animation: fadeIn 0.3s ease-in-out; padding-bottom: 80px; }
   .page.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   
-  h2 { border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; color: var(--sidebar-bg); margin-top: 0; }
+  h2 { border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; color: var(--sidebar-bg); margin-top: 0; font-size: 1.5rem; }
 
   /* --- CARDS & GRID --- */
   .card { background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   
+  /* --- FORMS --- */
   label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; color: #475569; }
-  input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; background: #fff; margin-bottom: 10px; }
+  input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; background: #fff; margin-bottom: 15px; outline: none; }
+  input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
   
-  button { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
+  button { padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; }
+  button:active { transform: scale(0.98); }
   .btn-primary { background-color: var(--primary); color: white; width: 100%; }
-  .btn-primary:hover { background-color: #2563eb; }
-  .btn-success { background-color: var(--success); color: white; padding: 5px 10px; font-size: 0.8rem; }
+  .btn-success { background-color: var(--success); color: white; padding: 6px 12px; font-size: 0.85rem; width: auto; }
   .btn-add { background-color: var(--warning); color: white; width: 100%; }
-  .btn-danger { background-color: var(--danger); color: white; padding: 5px 10px; font-size: 0.8rem; }
+  .btn-danger { background-color: var(--danger); color: white; padding: 6px 12px; font-size: 0.85rem; width: auto; }
 
-  /* --- CALENDÁRIO --- */
+  /* --- CALENDÁRIO (Desktop) --- */
   .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
   .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
   .day-name { text-align: center; font-weight: bold; color: #64748b; padding: 10px; background: #f8fafc; border-radius: 8px; }
@@ -76,70 +123,105 @@
   .dot-pendente { background-color: var(--warning); }
 
   /* --- TABELA --- */
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-  th { background: #f8fafc; color: #475569; padding: 10px; text-align: left; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
-  td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+  .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; min-width: 600px; }
+  th { background: #f8fafc; color: #475569; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+  td { padding: 12px; border-bottom: 1px solid #e2e8f0; color: #334155; }
 
   /* --- MODAL --- */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; }
-  .modal-overlay.open { display: flex; }
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s; }
   .modal-card { background: white; width: 95%; max-width: 600px; border-radius: 12px; overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
   .modal-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
   .modal-body { padding: 0; overflow-y: auto; }
   
-  .lista-recebimentos { width: 100%; }
+  .lista-recebimentos { width: 100%; min-width: auto; }
+  .lista-recebimentos th { position: sticky; top: 0; background: #f1f5f9; z-index: 10; }
   .row-pago { background-color: #f0fdf4; }
   .row-pago td { color: #15803d; text-decoration: line-through; opacity: 0.7; }
 
+  /* =========================================
+     ESTILO MOBILE (APP LIKE)
+     ========================================= */
   @media (max-width: 768px) {
-    body { flex-direction: column; height: auto; }
-    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
-    .menu-btn { width: auto; white-space: nowrap; padding: 10px; }
-    .calendar-grid { grid-template-columns: repeat(1, 1fr); }
-    .day-cell { min-height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    body { flex-direction: column; }
+    
+    /* Menu vira barra inferior */
+    .sidebar {
+      position: fixed; bottom: 0; left: 0; width: 100%; height: 65px;
+      flex-direction: row; justify-content: space-around; padding: 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1); border-top: 1px solid #334155;
+    }
+    .logo { display: none; }
+    
+    .menu-btn {
+      flex-direction: column; justify-content: center; gap: 4px; padding: 5px; margin: 0; border-radius: 0; font-size: 0.7rem; height: 100%;
+    }
+    .menu-btn i { font-size: 1.3rem; margin-bottom: 2px; }
+    .menu-btn.active { border-top: 3px solid var(--primary); background: rgba(255,255,255,0.05); color: var(--primary); box-shadow: none; }
+
+    /* Ajuste de conteúdo */
+    .main-content { padding: 15px; padding-bottom: 80px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
+    
+    .card { padding: 15px; margin-bottom: 15px; }
+    h2 { font-size: 1.3rem; margin-bottom: 15px; }
+
+    /* Calendário em Lista */
+    .calendar-grid { grid-template-columns: 1fr; gap: 8px; }
+    .day-name { display: none; }
+    .day-cell { 
+      min-height: auto; padding: 15px; 
+      display: flex; justify-content: space-between; align-items: center; 
+    }
+    .day-number { margin: 0; background: #f1f5f9; padding: 8px 12px; border-radius: 50%; }
+    .day-summary { text-align: right; margin: 0; font-size: 0.85rem; }
+
+    /* Modal Fullscreen */
+    .modal-card { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+    .modal-body { padding-bottom: 100px; }
   }
 </style>
 </head>
 <body>
 
   <nav class="sidebar">
-    <div class="logo">
-      <i class="fas fa-wallet fa-lg"></i> 
-      <span>RE Solution</span>
-    </div>
+    <div class="logo"><i class="fas fa-wallet fa-lg"></i> <span>RE Solution</span></div>
     
     <button class="menu-btn active" onclick="navegar('dashboard', this)">
-      <i class="fas fa-chart-pie"></i> Dashboard
+      <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
     </button>
     <button class="menu-btn" onclick="navegar('calendario', this)">
-      <i class="fas fa-calendar-check"></i> Calendário
+      <i class="fas fa-calendar-check"></i> <span>Calendário</span>
     </button>
     <button class="menu-btn" onclick="navegar('vendas', this)">
-      <i class="fas fa-shopping-cart"></i> Nova Venda
+      <i class="fas fa-shopping-cart"></i> <span>Venda</span>
     </button>
     <button class="menu-btn" onclick="navegar('clientes', this)">
-      <i class="fas fa-users"></i> Clientes
+      <i class="fas fa-users"></i> <span>Clientes</span>
     </button>
     <button class="menu-btn" onclick="navegar('produtos', this)">
-      <i class="fas fa-box"></i> Estoque
+      <i class="fas fa-box"></i> <span>Estoque</span>
     </button>
   </nav>
 
   <main class="main-content">
     
     <div id="dashboard" class="page active">
-      <h2>Financeiro</h2>
+      <h2>Visão Geral</h2>
       <div class="grid-3">
         <div class="card" style="border-left:5px solid var(--success)">
-          <label>Recebido (Caixa)</label>
+          <label>Caixa (Recebido)</label>
           <h1 id="dashReceita" style="margin:5px 0; color:var(--success)">R$ 0,00</h1>
+          <small style="opacity:0.7">Dinheiro, Pix e Parcelas Pagas</small>
         </div>
         <div class="card" style="border-left:5px solid var(--warning)">
-          <label>A Receber</label>
+          <label>A Receber (Futuro)</label>
           <h1 id="dashPendente" style="margin:5px 0; color:var(--warning)">R$ 0,00</h1>
+          <small style="opacity:0.7">Parcelas em aberto</small>
         </div>
         <div class="card" style="border-left:5px solid var(--primary)">
-          <label>Total Vendido</label>
+          <label>Vendas Totais</label>
           <h1 id="dashTotal" style="margin:5px 0; color:var(--primary)">R$ 0,00</h1>
         </div>
       </div>
@@ -147,10 +229,10 @@
 
     <div id="calendario" class="page">
       <div class="calendar-header">
-        <h2 style="border:none; margin:0;">Agenda de Recebimentos</h2>
+        <h2 style="border:none; margin:0;">Agenda</h2>
         <div>
           <button class="btn-primary" style="width:auto; padding:8px 15px;" onclick="mudarMes(-1)"><i class="fas fa-chevron-left"></i></button>
-          <span id="mesAnoLabel" style="font-size:1.2rem; font-weight:bold; margin:0 15px;">Mês/Ano</span>
+          <span id="mesAnoLabel" style="font-size:1.1rem; font-weight:bold; margin:0 15px;">MÊS</span>
           <button class="btn-primary" style="width:auto; padding:8px 15px;" onclick="mudarMes(1)"><i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -159,62 +241,76 @@
 
     <div id="vendas" class="page">
       <h2>Nova Venda</h2>
+      
       <div class="grid-2">
         <div class="card">
-          <h3>Carrinho</h3>
-          <div class="grid-2">
-            <div><label>Produto</label><select id="selProduto"><option>Carregando...</option></select></div>
-            <div><label>Qtd</label><input type="number" id="qtdItem" value="1" min="1"></div>
+          <label>Adicionar Produto</label>
+          <div class="grid-2" style="gap:10px; margin-bottom:0;">
+            <select id="selProduto" style="margin-bottom:0;"><option>Carregando...</option></select>
+            <input type="number" id="qtdItem" value="1" min="1" style="margin-bottom:0;">
           </div>
-          <button class="btn-add" onclick="addCarrinho()">+ Adicionar Item</button>
+          <button class="btn-add" onclick="addCarrinho()" style="margin-top:15px;">+ Adicionar ao Carrinho</button>
         </div>
+        
         <div class="card">
-          <h3>Itens</h3>
-          <table style="margin-top:0;"><thead><tr><th>Item</th><th>Qtd</th><th>Total</th></tr></thead><tbody id="tbCarrinho"></tbody></table>
-          <div style="text-align:right; font-size:1.3rem; font-weight:bold; margin-top:10px;">Total: <span id="totalCarrinho">R$ 0,00</span></div>
+          <h3 style="margin-top:0;">Carrinho</h3>
+          <div class="table-responsive">
+            <table style="min-width:100%;">
+              <thead><tr><th>Item</th><th>Qtd</th><th>Subtotal</th></tr></thead>
+              <tbody id="tbCarrinho"></tbody>
+            </table>
+          </div>
+          <div style="text-align:right; font-size:1.3rem; font-weight:bold; margin-top:15px; color:var(--primary);">
+            Total: <span id="totalCarrinho">R$ 0,00</span>
+          </div>
         </div>
       </div>
 
-      <div class="card" id="cardFinalizar" style="display:none;">
+      <div class="card" id="cardFinalizar" style="display:none; border:2px solid var(--primary);">
+        <h3 style="margin-top:0;">Finalizar Pagamento</h3>
         <div class="grid-2">
           <div><label>Cliente</label><select id="selCliente"><option>Selecione...</option></select></div>
           <div>
-            <label>Pagamento</label>
+            <label>Forma de Pagamento</label>
             <select id="tipoPagamento" onchange="toggleCrediario()">
-              <option value="dinheiro">💵 Dinheiro</option>
-              <option value="pix">💠 Pix</option>
-              <option value="debito">💳 Débito</option>
-              <option value="crediario">📅 Crediário</option>
+              <option value="dinheiro">💵 Dinheiro (Caixa)</option>
+              <option value="pix">💠 Pix (Caixa)</option>
+              <option value="debito">💳 Débito (Caixa)</option>
+              <option value="crediario">📅 Crediário (A Receber)</option>
             </select>
           </div>
         </div>
+
         <div id="areaCrediario" style="display:none; background:#f0f9ff; padding:15px; border:1px dashed var(--primary); margin-bottom:15px; border-radius:8px;">
-          <h4 style="margin:0 0 10px 0;">Parcelamento</h4>
+          <h4 style="margin:0 0 10px 0;">Configurar Parcelas</h4>
           <div class="grid-2">
-            <div><label>Parcelas</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></div>
-            <div><label>1ª Parcela</label><input type="date" id="dataPrimeira"></div>
+            <div><label>Qtd Parcelas</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option></select></div>
+            <div><label>Vencimento 1ª Parcela</label><input type="date" id="dataPrimeira"></div>
           </div>
         </div>
-        <button class="btn-primary" onclick="finalizarVenda()">FINALIZAR VENDA</button>
+
+        <button class="btn-primary" onclick="finalizarVenda()" style="font-size:1.1rem; padding:16px;">
+          <i class="fas fa-check-circle"></i> CONFIRMAR VENDA
+        </button>
       </div>
     </div>
 
     <div id="clientes" class="page">
-      <h2>Cadastro de Clientes</h2>
+      <h2>Clientes</h2>
       <div class="card">
         <div class="grid-2">
-          <div><label>Nome Completo</label><input id="nomeCli" placeholder="Ex: Maria Silva"></div>
-          <div><label>Telefone / WhatsApp</label><input id="telCli" placeholder="(00) 00000-0000"></div>
+          <div><label>Nome Completo</label><input id="nomeCli" placeholder="Ex: João Silva"></div>
+          <div><label>WhatsApp</label><input id="telCli" placeholder="(00) 00000-0000"></div>
         </div>
         <div class="grid-2">
-          <div><label>Email</label><input id="emailCli" placeholder="cliente@email.com"></div>
-          <div><label>Endereço</label><input id="endCli" placeholder="Rua, Número, Bairro"></div>
+          <div><label>Email</label><input id="emailCli" placeholder="email@cliente.com"></div>
+          <div><label>Endereço</label><input id="endCli" placeholder="Rua, Bairro, Nº"></div>
         </div>
         <button class="btn-primary" onclick="addCliente()">Salvar Cliente</button>
       </div>
-      <div class="card">
+      <div class="card table-responsive">
         <table>
-          <thead><tr><th>Nome</th><th>Tel</th><th>Email</th><th>Endereço</th><th>Ação</th></tr></thead>
+          <thead><tr><th>Nome</th><th>Contato</th><th>Endereço</th><th>Ação</th></tr></thead>
           <tbody id="tbClientes"></tbody>
         </table>
       </div>
@@ -223,45 +319,70 @@
     <div id="produtos" class="page">
       <h2>Estoque</h2>
       <div class="card">
-        <div class="grid-3"><input id="nomeProd" placeholder="Produto"><input id="precoProd" type="number" placeholder="Preço"><input id="qtdProd" type="number" placeholder="Qtd"></div>
-        <button class="btn-primary" onclick="addProduto()">Salvar</button>
+        <div class="grid-3">
+          <div><label>Produto</label><input id="nomeProd" placeholder="Nome do Item"></div>
+          <div><label>Preço (R$)</label><input id="precoProd" type="number" step="0.01"></div>
+          <div><label>Estoque</label><input id="qtdProd" type="number"></div>
+        </div>
+        <button class="btn-primary" onclick="addProduto()">Salvar Produto</button>
       </div>
-      <div class="card"><table><thead><tr><th>Produto</th><th>R$</th><th>Qtd</th><th>Ação</th></tr></thead><tbody id="tbProdutos"></tbody></table></div>
+      <div class="card table-responsive">
+        <table>
+          <thead><tr><th>Produto</th><th>Preço</th><th>Qtd</th><th>Ação</th></tr></thead>
+          <tbody id="tbProdutos"></tbody>
+        </table>
+      </div>
     </div>
+
   </main>
 
   <div id="modalDia" class="modal-overlay" onclick="fecharModal(event)">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="tituloModalDia">Recebimentos</h3>
-        <button onclick="document.getElementById('modalDia').style.display='none'" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
+        <h3 id="tituloModalDia" style="margin:0">Recebimentos</h3>
+        <button onclick="document.getElementById('modalDia').style.display='none'" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
       </div>
       <div class="modal-body">
-        <table class="lista-recebimentos">
-          <thead><tr><th>Cliente</th><th>Parcela</th><th>Valor</th><th>Ação</th></tr></thead>
-          <tbody id="listaParcelasDia"></tbody>
-        </table>
-        <div id="msgSemParcelas" style="padding:20px; text-align:center; color:#999; display:none;">Nada para hoje.</div>
+        <div class="table-responsive">
+          <table class="lista-recebimentos">
+            <thead><tr><th>Cliente</th><th>Ref.</th><th>Valor</th><th>Ação</th></tr></thead>
+            <tbody id="listaParcelasDia"></tbody>
+          </table>
+        </div>
+        <div id="msgSemParcelas" style="padding:30px; text-align:center; color:#94a3b8; display:none;">
+          Nenhum recebimento agendado para este dia.
+        </div>
       </div>
     </div>
   </div>
 
 <script>
-// --- BANCO DE DADOS ---
-const db = { get: k => JSON.parse(localStorage.getItem(k))||[], set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) };
+// --- SERVICE WORKER (PWA) ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.log('Erro SW:', err));
+  });
+}
+
+// --- BANCO DE DADOS (LOCALSTORAGE) ---
+const db = { 
+  get: k => JSON.parse(localStorage.getItem(k))||[], 
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) 
+};
 let clientes = db.get("clientes");
 let produtos = db.get("produtos");
 let vendas = db.get("vendas");
 let carrinho = [];
-
 let dataAtual = new Date();
 
+// --- INICIALIZAÇÃO ---
 window.onload = () => {
-  document.getElementById('dataPrimeira').valueAsDate = new Date();
+  if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date();
   atualizarTudo();
   renderCalendar();
 };
 
+// --- UTILITÁRIOS ---
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
 
 function navegar(id, btn) {
@@ -272,7 +393,7 @@ function navegar(id, btn) {
   if(id === 'calendario') renderCalendar();
 }
 
-// --- CALENDÁRIO ---
+// --- CALENDÁRIO HÍBRIDO ---
 function mudarMes(delta) {
   dataAtual.setMonth(dataAtual.getMonth() + delta);
   renderCalendar();
@@ -280,6 +401,7 @@ function mudarMes(delta) {
 
 function renderCalendar() {
   const grid = document.getElementById("gridDias");
+  // Header dias da semana (some no mobile via CSS)
   grid.innerHTML = '<div class="day-name">DOM</div><div class="day-name">SEG</div><div class="day-name">TER</div><div class="day-name">QUA</div><div class="day-name">QUI</div><div class="day-name">SEX</div><div class="day-name">SÁB</div>';
   
   const ano = dataAtual.getFullYear();
@@ -289,31 +411,42 @@ function renderCalendar() {
   const diasNoMes = new Date(ano, mes + 1, 0).getDate();
   const primeiroDia = new Date(ano, mes, 1).getDay();
 
-  for(let i=0; i<primeiroDia; i++) grid.appendChild(document.createElement('div'));
+  // Espaços vazios antes do dia 1
+  for(let i=0; i<primeiroDia; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'day-name'; // Reutiliza classe para ocultar no mobile se precisar
+    empty.style.background = 'transparent';
+    grid.appendChild(empty);
+  }
 
   for(let dia=1; dia<=diasNoMes; dia++) {
     const cell = document.createElement('div');
     cell.className = 'day-cell';
     const dataStr = new Date(ano, mes, dia).toLocaleDateString('pt-BR');
     
-    // Hoje?
+    // Marca Hoje
     const hoje = new Date();
     if(dia===hoje.getDate() && mes===hoje.getMonth() && ano===hoje.getFullYear()) cell.classList.add('today');
 
-    // Dados do dia
+    // Conta Parcelas
     let pendente=0, pago=0;
     vendas.forEach(v => {
       if(v.tipo==='crediario' && v.parcelas) {
-        v.parcelas.forEach(p => { if(p.data === dataStr) { if(p.paga) pago++; else pendente++; } });
+        v.parcelas.forEach(p => { 
+          if(p.data === dataStr) { if(p.paga) pago++; else pendente++; } 
+        });
       }
     });
 
     let html = `<span class="day-number">${dia}</span>`;
     if(pendente>0 || pago>0) {
       html += `<div class="day-summary">`;
-      if(pendente>0) html += `<span class="event-dot dot-pendente"></span>${pendente} a receber<br>`;
-      if(pago>0) html += `<span class="event-dot dot-pago"></span>${pago} pagos`;
+      if(pendente>0) html += `<div><span class="event-dot dot-pendente"></span>${pendente} a receber</div>`;
+      if(pago>0) html += `<div><span class="event-dot dot-pago"></span>${pago} pagos</div>`;
       html += `</div>`;
+    } else {
+       // Placeholder para manter altura no mobile
+       html += `<div class="day-summary" style="opacity:0">.</div>`;
     }
     cell.innerHTML = html;
     cell.onclick = () => abrirModalDia(dataStr);
@@ -321,9 +454,9 @@ function renderCalendar() {
   }
 }
 
-// --- MODAL DIA ---
+// --- MODAL DETALHES DO DIA ---
 function abrirModalDia(dataStr) {
-  document.getElementById("tituloModalDia").innerText = `Recebimentos: ${dataStr}`;
+  document.getElementById("tituloModalDia").innerText = `Dia ${dataStr}`;
   const tbody = document.getElementById("listaParcelasDia");
   tbody.innerHTML = "";
   let achou = false;
@@ -335,26 +468,38 @@ function abrirModalDia(dataStr) {
           achou = true;
           const tr = document.createElement('tr');
           if(p.paga) tr.className = 'row-pago';
+          
           tr.innerHTML = `
-            <td><strong>${v.cliente}</strong><br><small>Ref: ${v.id}</small></td>
+            <td>
+              <div style="font-weight:bold">${v.cliente}</div>
+              <small style="color:#666">Venda #${v.id.toString().slice(-4)}</small>
+            </td>
             <td>${p.num}ª Parc</td>
-            <td>${formatMoney(p.valor)}</td>
-            <td>${p.paga ? '<span style="color:green">Pago</span>' : `<button class="btn-success" onclick="receber(${vIndex},${pIndex},'${dataStr}')">Receber</button>`}</td>
+            <td style="font-weight:600">${formatMoney(p.valor)}</td>
+            <td>
+              ${p.paga 
+                ? '<i class="fas fa-check-circle" style="color:var(--success)"></i>' 
+                : `<button class="btn-success" onclick="receber(${vIndex},${pIndex},'${dataStr}')">Receber</button>`
+              }
+            </td>
           `;
           tbody.appendChild(tr);
         }
       });
     }
   });
+
   document.getElementById("msgSemParcelas").style.display = achou ? 'none' : 'block';
   document.getElementById("modalDia").style.display = "flex";
 }
 
 function receber(vi, pi, dataStr) {
-  if(confirm("Confirmar recebimento?")) {
+  if(confirm("Confirmar o recebimento deste valor?")) {
     vendas[vi].parcelas[pi].paga = true;
     db.set("vendas", vendas);
-    abrirModalDia(dataStr); atualizarTudo(); renderCalendar();
+    abrirModalDia(dataStr); 
+    atualizarTudo(); 
+    renderCalendar();
   }
 }
 
@@ -373,126 +518,6 @@ function atualizarDashboard() {
   document.getElementById("dashTotal").innerText = formatMoney(total);
 }
 
-// --- VENDAS ---
+// --- VENDAS & CARRINHO ---
 function addCarrinho() {
-  const i = document.getElementById("selProduto").value;
-  const q = parseInt(document.getElementById("qtdItem").value);
-  if(i==="" || q<1) return;
-  const p = produtos[i];
-  if(q > p.qtd) return alert("Estoque insuficiente!");
-  carrinho.push({ idOrigem: i, nome: p.nome, preco: p.preco, qtd: q, sub: p.preco*q });
-  renderCarrinho();
-}
-
-function renderCarrinho() {
-  const tb = document.getElementById("tbCarrinho"); tb.innerHTML="";
-  let t=0;
-  carrinho.forEach(i => { t+=i.sub; tb.innerHTML+=`<tr><td>${i.nome}</td><td>${i.qtd}</td><td>${formatMoney(i.sub)}</td></tr>` });
-  document.getElementById("totalCarrinho").innerText = formatMoney(t);
-  document.getElementById("cardFinalizar").style.display = t>0?"block":"none";
-}
-
-function toggleCrediario() {
-  const t = document.getElementById("tipoPagamento").value;
-  document.getElementById("areaCrediario").style.display = t==='crediario'?'block':'none';
-}
-
-function finalizarVenda() {
-  const cliIdx = document.getElementById("selCliente").value;
-  if(cliIdx==="") return alert("Selecione um cliente!");
-  
-  const total = carrinho.reduce((a,b)=>a+b.sub,0);
-  const tipo = document.getElementById("tipoPagamento").value;
-  let parcelas = [];
-
-  if(tipo==='crediario') {
-    const qtd = parseInt(document.getElementById("qtdParcelas").value);
-    const dt = document.getElementById("dataPrimeira").value;
-    if(!dt) return alert("Data 1ª parcela?");
-    let db = new Date(dt+'T12:00:00');
-    for(let i=0; i<qtd; i++) {
-      let d = new Date(db); d.setDate(d.getDate()+(i*30));
-      parcelas.push({ num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false });
-    }
-  }
-
-  carrinho.forEach(x => produtos[x.idOrigem].qtd -= x.qtd);
-  db.set("produtos", produtos);
-
-  vendas.unshift({
-    id: Date.now(),
-    cliente: clientes[cliIdx].nome,
-    total: total,
-    tipo: tipo,
-    parcelas: parcelas,
-    itens: [...carrinho],
-    dataVenda: new Date().toLocaleDateString('pt-BR')
-  });
-  db.set("vendas", vendas);
-  
-  carrinho=[]; renderCarrinho(); atualizarTudo(); renderCalendar();
-  alert("Venda realizada!");
-  navegar('calendario');
-}
-
-// --- CRUD ---
-function addCliente(){ 
-  const n=document.getElementById("nomeCli").value; 
-  const t=document.getElementById("telCli").value;
-  const e=document.getElementById("emailCli").value;
-  const end=document.getElementById("endCli").value;
-  
-  if(!n) return alert("Nome obrigatório");
-
-  clientes.push({nome:n, tel:t, email:e, end:end}); 
-  db.set("clientes",clientes); 
-  
-  // Limpar campos
-  document.getElementById("nomeCli").value = "";
-  document.getElementById("telCli").value = "";
-  document.getElementById("emailCli").value = "";
-  document.getElementById("endCli").value = "";
-
-  atualizarTudo(); 
-  alert("Cliente salvo!");
-}
-
-function deletar(tipo, idx) {
-  if(confirm("Excluir item?")) {
-    if(tipo==='c') clientes.splice(idx,1);
-    if(tipo==='p') produtos.splice(idx,1);
-    db.set("clientes", clientes);
-    db.set("produtos", produtos);
-    atualizarTudo();
-  }
-}
-
-function addProduto(){
-  const n=document.getElementById("nomeProd").value; const p=document.getElementById("precoProd").value; const q=document.getElementById("qtdProd").value;
-  if(n){ 
-    produtos.push({nome:n, preco:parseFloat(p), qtd:parseInt(q)}); 
-    db.set("produtos",produtos); 
-    document.getElementById("nomeProd").value = "";
-    document.getElementById("precoProd").value = "";
-    document.getElementById("qtdProd").value = "";
-    atualizarTudo(); 
-  }
-}
-
-function atualizarTudo() {
-  atualizarDashboard();
-  const sc=document.getElementById("selCliente"); sc.innerHTML="<option value=''>Selecione...</option>";
-  clientes.forEach((c,i)=>sc.innerHTML+=`<option value="${i}">${c.nome}</option>`);
-  
-  const sp=document.getElementById("selProduto"); sp.innerHTML="<option value=''>Selecione...</option>";
-  produtos.forEach((p,i)=>sp.innerHTML+=`<option value="${i}">${p.nome} (${formatMoney(p.preco)})</option>`);
-
-  const tc=document.getElementById("tbClientes"); tc.innerHTML="";
-  clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td>${c.tel}</td><td>${c.email||'-'}</td><td>${c.end||'-'}</td><td><button class="btn-danger" onclick="deletar('c',${i})"><i class="fas fa-trash"></i></button></td></tr>`);
-  
-  const tp=document.getElementById("tbProdutos"); tp.innerHTML="";
-  produtos.forEach((p,i)=>tp.innerHTML+=`<tr><td>${p.nome}</td><td>${formatMoney(p.preco)}</td><td>${p.qtd}</td><td><button class="btn-danger" onclick="deletar('p',${i})"><i class="fas fa-trash"></i></button></td></tr>`);
-}
-</script>
-</body>
-</html>
+  const i = document.getElementById("selProduto
