@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,8 +16,7 @@
 <style>
   :root {
     /* Cores Blush / Aura */
-    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); /* Roxo/Azul */
-    --accent-color: #ec4899; /* Rosa Blush */
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: 1px solid rgba(255, 255, 255, 0.6);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
@@ -39,7 +39,7 @@
     color: var(--text-dark); 
     overflow: hidden; 
     
-    /* FUNDO ANIMADO BLUSH */
+    /* FUNDO ANIMADO */
     background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
     background-size: 400% 400%;
     animation: blushAnimation 15s ease infinite;
@@ -51,10 +51,10 @@
     100% { background-position: 0% 50%; }
   }
 
-  /* --- SIDEBAR DESKTOP (Vidro Escuro/Colorido) --- */
+  /* --- SIDEBAR DESKTOP (Vertical e Alinhada à Esquerda) --- */
   .sidebar { 
     width: 270px; 
-    background: rgba(255, 255, 255, 0.85); /* Vidro Claro */
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: var(--glass-border);
@@ -83,10 +83,14 @@
     border: none; 
     color: var(--text-light); 
     padding: 14px 18px; 
+    
+    /* ALINHAMENTO DESKTOP */
     display: flex; 
     align-items: center; 
-    gap: 15px; 
+    justify-content: flex-start; /* Esquerda */
     text-align: left;
+    gap: 15px; 
+    
     cursor: pointer; 
     font-size: 0.95rem; 
     font-weight: 500;
@@ -111,182 +115,99 @@
   .menu-btn i { width: 24px; text-align: center; font-size: 1.1rem; }
 
   /* --- CONTEÚDO PRINCIPAL --- */
-  .main-content { 
-    flex: 1; 
-    padding: 30px; 
-    overflow-y: auto; 
-    overflow-x: hidden; 
-  }
-  
-  .page { display: none; animation: fadeIn 0.4s ease-out; padding-bottom: 90px; }
+  .main-content { flex: 1; padding: 30px; overflow-y: auto; overflow-x: hidden; position: relative; }
+  .page { display: none; animation: fadeIn 0.4s ease-out; padding-bottom: 100px; }
   .page.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   
-  h2 { 
-    border-bottom: none; 
-    color: var(--text-dark); 
-    margin-top: 0; 
-    font-size: 1.8rem; 
-    font-weight: 700;
-    margin-bottom: 25px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  }
+  h2 { margin-top: 0; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-  /* --- CARDS (GLASSMORPHISM) --- */
+  /* --- CARDS (GLASS) --- */
   .card { 
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 20px; 
-    padding: 30px; 
+    padding: 25px; 
     box-shadow: var(--glass-shadow); 
     border: var(--glass-border);
     margin-bottom: 25px; 
-    transition: transform 0.3s;
   }
   
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   
   /* --- INPUTS & BUTTONS --- */
-  label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-light); letter-spacing: 0.5px; }
-  
+  label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-light); }
   input, select { 
-    width: 100%; 
-    padding: 14px; 
-    border: 2px solid rgba(255,255,255,0.8); 
-    border-radius: 12px; 
-    font-size: 1rem; 
-    background: rgba(255,255,255,0.6); 
-    color: var(--text-dark);
-    margin-bottom: 15px; 
-    outline: none; 
-    transition: all 0.3s;
+    width: 100%; padding: 14px; border: 2px solid rgba(255,255,255,0.8); border-radius: 12px; font-size: 1rem; 
+    background: rgba(255,255,255,0.6); color: var(--text-dark); margin-bottom: 15px; outline: none; transition: 0.3s;
     font-family: 'Poppins', sans-serif;
   }
+  input:focus, select:focus { background: white; border-color: #a855f7; box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1); }
   
-  input:focus, select:focus { 
-    background: white; 
-    border-color: #a855f7; 
-    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1); 
-  }
-  
-  button { 
-    padding: 15px; 
-    border: none; 
-    border-radius: 12px; 
-    cursor: pointer; 
-    font-weight: 600; 
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 8px; 
-    font-size: 1rem; 
-    transition: 0.3s; 
-    font-family: 'Poppins', sans-serif;
-  }
-  
+  button { padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.3s; font-family: 'Poppins', sans-serif; }
   button:active { transform: scale(0.96); }
   
-  .btn-primary { 
-    background: var(--primary-gradient); 
-    color: white; 
-    width: 100%; 
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-  }
-  .btn-primary:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5); transform: translateY(-2px); }
-  
+  .btn-primary { background: var(--primary-gradient); color: white; width: 100%; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
   .btn-success { background: var(--success); color: white; padding: 8px 16px; font-size: 0.85rem; width: auto; border-radius: 8px; }
   .btn-add { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; width: 100%; }
   .btn-danger { background: #ef4444; color: white; padding: 8px 12px; font-size: 0.85rem; width: auto; border-radius: 8px; }
 
   /* --- CALENDÁRIO --- */
   .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
-  
-  .day-name { text-align: center; font-weight: 700; color: #8b5cf6; padding: 10px; font-size: 0.9rem; text-transform: uppercase; }
-  
-  .day-cell { 
-    background: rgba(255,255,255,0.6); 
-    border: 1px solid rgba(255,255,255,0.5); 
-    border-radius: 16px; 
-    min-height: 120px; 
-    padding: 10px; 
-    position: relative; 
-    cursor: pointer; 
-    transition: 0.3s; 
-    display: flex;
-    flex-direction: column;
-  }
-  .day-cell:hover { background: white; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-  
-  .day-number { font-weight: 700; color: var(--text-dark); margin-bottom: 5px; font-size: 1.1rem; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .day-name { text-align: center; font-weight: 700; color: #8b5cf6; padding: 10px; font-size: 0.9rem; }
+  .day-cell { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.5); border-radius: 16px; min-height: 120px; padding: 10px; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; }
+  .day-cell:hover { background: white; transform: translateY(-3px); }
+  .day-number { font-weight: 700; margin-bottom: 5px; font-size: 1.1rem; }
   .today { border: 2px solid #ec4899; background: rgba(236, 72, 153, 0.05); }
-  
   .day-summary { font-size: 0.75rem; margin-top: auto; }
   .event-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-  .dot-pago { background-color: var(--success); box-shadow: 0 0 5px var(--success); }
-  .dot-pendente { background-color: var(--warning); box-shadow: 0 0 5px var(--warning); }
+  .dot-pago { background-color: var(--success); }
+  .dot-pendente { background-color: var(--warning); }
 
   /* --- TABELA --- */
   .table-responsive { overflow-x: auto; border-radius: 12px; }
   table { width: 100%; border-collapse: collapse; min-width: 600px; }
   th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; font-weight: 600; }
-  td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-dark); }
-  tr:last-child td { border-bottom: none; }
+  td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
   /* --- MODAL --- */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center; }
   .modal-overlay.open { display: flex; }
-  
-  .modal-card { 
-    background: #fff; 
-    width: 90%; 
-    max-width: 500px; 
-    border-radius: 24px; 
-    overflow: hidden; 
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
-    display: flex; flex-direction: column; max-height: 85vh;
-  }
+  .modal-card { background: #fff; width: 90%; max-width: 500px; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2); display: flex; flex-direction: column; max-height: 85vh; }
   .modal-header { background: var(--primary-gradient); color: white; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
   .modal-body { padding: 0; overflow-y: auto; }
-
-  /* --- MEDIDORES DASHBOARD --- */
-  .dash-value { font-size: 2rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
+  
+  .dash-value { font-size: 2rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
   /* =========================================
-     MOBILE (BARRA INFERIOR DE VIDRO)
+     MOBILE (BARRA INFERIOR CORRIGIDA)
      ========================================= */
   @media (max-width: 768px) {
     body { flex-direction: column; }
     
     .sidebar {
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 80px; /* Mais altura para elegância */
-      flex-direction: row; 
-      justify-content: space-between; 
-      padding: 10px 20px;
-      
-      background: rgba(255, 255, 255, 0.9); /* Vidro forte */
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-right: none;
-      border-top: 1px solid rgba(255,255,255,0.5);
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
-      border-radius: 20px 20px 0 0;
+      position: fixed; bottom: 0; left: 0; width: 100%; height: 80px;
+      flex-direction: row; justify-content: space-between; padding: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-right: none; border-top: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.05); border-radius: 20px 20px 0 0;
+      z-index: 9999;
     }
     
     .logo { display: none; }
     
     .menu-btn {
-      flex: 1; 
-      flex-direction: column; 
+      flex: 1; /* FORÇA LARGURA IGUAL PARA TODOS */
+      flex-direction: column; /* Ícone em cima */
       justify-content: center; 
+      align-items: center;
+      text-align: center;
       gap: 5px; 
-      padding: 0; 
+      padding: 5px 0; 
       margin: 0; 
       border-radius: 0; 
       font-size: 0.75rem; 
@@ -297,8 +218,8 @@
       transform: none !important;
     }
     
-    .menu-btn i { font-size: 1.5rem; display: block; width: auto; margin-bottom: 2px; transition: 0.3s; }
-    .menu-btn span { font-weight: 500; }
+    .menu-btn i { font-size: 1.5rem; display: block; width: auto; margin: 0 auto; transition: 0.3s; }
+    .menu-btn span { display: block; font-weight: 500; }
     
     .menu-btn.active { color: #8b5cf6; }
     .menu-btn.active i { transform: translateY(-3px); color: #8b5cf6; filter: drop-shadow(0 4px 6px rgba(139, 92, 246, 0.4)); }
@@ -306,21 +227,11 @@
     .main-content { padding: 20px; padding-bottom: 100px; }
     .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 20px; }
     
-    /* Calendário Mobile (Lista Clean) */
     .calendar-grid { grid-template-columns: 1fr; gap: 10px; }
     .day-name { display: none; }
-    .day-cell { 
-      min-height: auto; 
-      padding: 20px; 
-      flex-direction: row; 
-      justify-content: space-between; 
-      align-items: center; 
-      border-radius: 16px;
-    }
-    .day-number { margin: 0; background: rgba(255,255,255,0.8); padding: 10px 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .day-summary { text-align: right; margin: 0; font-size: 0.9rem; }
+    .day-cell { min-height: auto; padding: 20px; flex-direction: row; justify-content: space-between; align-items: center; border-radius: 16px; }
+    .day-number { margin: 0; background: rgba(255,255,255,0.8); padding: 10px 15px; border-radius: 12px; }
     
-    /* Modal Fullscreen bonito */
     .modal-card { width: 100%; height: 100%; max-height: 100%; border-radius: 0; background: #fafafa; }
     .modal-body { padding-bottom: 100px; }
   }
@@ -497,7 +408,6 @@
   </div>
 
 <script>
-// --- CORE FUNCTIONALITY ---
 function navegar(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -517,30 +427,20 @@ window.onload = () => {
 
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
 
-// --- CALENDÁRIO ---
 function mudarMes(delta) { dataAtual.setMonth(dataAtual.getMonth() + delta); renderCalendar(); }
-
 function renderCalendar() {
   const grid = document.getElementById("gridDias"); if(!grid) return;
   grid.innerHTML = '<div class="day-name">DOM</div><div class="day-name">SEG</div><div class="day-name">TER</div><div class="day-name">QUA</div><div class="day-name">QUI</div><div class="day-name">SEX</div><div class="day-name">SÁB</div>';
-  
   const ano = dataAtual.getFullYear(); const mes = dataAtual.getMonth();
   document.getElementById("mesAnoLabel").innerText = new Date(ano, mes).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).toUpperCase();
-  
-  const diasNoMes = new Date(ano, mes + 1, 0).getDate();
-  const primeiroDia = new Date(ano, mes, 1).getDay();
-
+  const diasNoMes = new Date(ano, mes + 1, 0).getDate(); const primeiroDia = new Date(ano, mes, 1).getDay();
   for(let i=0; i<primeiroDia; i++) { const e = document.createElement('div'); e.className = 'day-name'; e.innerText=""; grid.appendChild(e); }
-
   for(let dia=1; dia<=diasNoMes; dia++) {
     const cell = document.createElement('div'); cell.className = 'day-cell';
     const dataStr = new Date(ano, mes, dia).toLocaleDateString('pt-BR');
-    const hoje = new Date();
-    if(dia===hoje.getDate() && mes===hoje.getMonth() && ano===hoje.getFullYear()) cell.classList.add('today');
-
+    const hoje = new Date(); if(dia===hoje.getDate() && mes===hoje.getMonth() && ano===hoje.getFullYear()) cell.classList.add('today');
     let pendente=0, pago=0;
     vendas.forEach(v => { if(v.tipo==='crediario' && v.parcelas) v.parcelas.forEach(p => { if(p.data === dataStr) { if(p.paga) pago++; else pendente++; } }); });
-
     let html = `<span class="day-number">${dia}</span>`;
     if(pendente>0 || pago>0) {
       html += `<div class="day-summary">`;
@@ -548,15 +448,12 @@ function renderCalendar() {
       if(pago>0) html += `<div><span class="event-dot dot-pago"></span>${pago} pagos</div>`;
       html += `</div>`;
     } else html += `<div class="day-summary" style="opacity:0">.</div>`;
-    
     cell.innerHTML = html; cell.onclick = () => abrirModalDia(dataStr); grid.appendChild(cell);
   }
 }
-
 function abrirModalDia(dataStr) {
   document.getElementById("tituloModalDia").innerText = `Dia ${dataStr}`;
   const tbody = document.getElementById("listaParcelasDia"); tbody.innerHTML = ""; let achou = false;
-
   vendas.forEach((v, vIndex) => {
     if(v.tipo === 'crediario' && v.parcelas) {
       v.parcelas.forEach((p, pIndex) => {
@@ -576,13 +473,11 @@ function abrirModalDia(dataStr) {
   document.getElementById("msgSemParcelas").style.display = achou ? 'none' : 'block';
   document.getElementById("modalDia").style.display = "flex";
 }
-
 function receber(vi, pi, dataStr) {
   if(confirm("Confirmar recebimento?")) { vendas[vi].parcelas[pi].paga = true; db.set("vendas", vendas); abrirModalDia(dataStr); atualizarTudo(); renderCalendar(); }
 }
 function fecharModal(e) { if(e.target.id === 'modalDia' || e.target.closest('button')) document.getElementById('modalDia').style.display='none'; }
 
-// --- DASHBOARD & LOGIC ---
 function atualizarDashboard() {
   let caixa=0, pend=0, total=0;
   vendas.forEach(v => {
@@ -594,25 +489,20 @@ function atualizarDashboard() {
   document.getElementById("dashPendente").innerText = formatMoney(pend);
   document.getElementById("dashTotal").innerText = formatMoney(total);
 }
-
 function addCarrinho() {
   const i = document.getElementById("selProduto").value; const q = parseInt(document.getElementById("qtdItem").value);
   if(!i || isNaN(q) || q<1) return alert("Erro no item");
-  const p = produtos[i];
-  const qtdNoCarrinho = carrinho.reduce((acc, item) => item.idOrigem == i ? acc + item.qtd : acc, 0);
+  const p = produtos[i]; const qtdNoCarrinho = carrinho.reduce((acc, item) => item.idOrigem == i ? acc + item.qtd : acc, 0);
   if((q + qtdNoCarrinho) > p.qtd) return alert("Sem estoque!");
   carrinho.push({ idOrigem: i, nome: p.nome, preco: p.preco, qtd: q, sub: p.preco*q }); renderCarrinho();
 }
-
 function renderCarrinho() {
   const tb = document.getElementById("tbCarrinho"); tb.innerHTML=""; let t=0;
   carrinho.forEach(item => { t += item.sub; tb.innerHTML += `<tr><td>${item.nome}</td><td>${item.qtd}</td><td>${formatMoney(item.sub)}</td></tr>`; });
   document.getElementById("totalCarrinho").innerText = formatMoney(t);
   document.getElementById("cardFinalizar").style.display = t>0 ? "block" : "none";
 }
-
 function toggleCrediario() { const t = document.getElementById("tipoPagamento").value; document.getElementById("areaCrediario").style.display = t==='crediario'?'block':'none'; }
-
 function finalizarVenda() {
   const cliIdx = document.getElementById("selCliente").value; if(!cliIdx) return alert("Selecione cliente");
   const total = carrinho.reduce((a,b)=>a+b.sub,0); const tipo = document.getElementById("tipoPagamento").value; let parcelas = [];
@@ -625,7 +515,6 @@ function finalizarVenda() {
   vendas.unshift({ id: Date.now(), cliente: clientes[cliIdx].nome, total: total, tipo: tipo, parcelas: parcelas, itens: [...carrinho], dataVenda: new Date().toLocaleDateString('pt-BR') });
   db.set("vendas", vendas); carrinho=[]; renderCarrinho(); atualizarTudo(); renderCalendar(); alert("Venda realizada com sucesso!"); navegar('calendario');
 }
-
 function addCliente(){ 
   const n=document.getElementById("nomeCli").value; const t=document.getElementById("telCli").value; const e=document.getElementById("emailCli").value; const end=document.getElementById("endCli").value;
   if(n){ clientes.push({nome:n, tel:t, email:e, end:end}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value=""; }
@@ -635,7 +524,6 @@ function addProduto(){
   if(n && p){ produtos.push({nome:n, preco:parseFloat(p), qtd:parseInt(q)}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo"); document.getElementById("nomeProd").value=""; }
 }
 function deletar(t, i) { if(confirm("Excluir?")) { if(t==='c') clientes.splice(i,1); if(t==='p') produtos.splice(i,1); db.set("clientes",clientes); db.set("produtos",produtos); atualizarTudo(); } }
-
 function atualizarTudo() {
   atualizarDashboard();
   const sc=document.getElementById("selCliente"); sc.innerHTML="<option value=''>Cliente...</option>";
