@@ -102,23 +102,63 @@
   th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; }
   td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-  /* CUPOM & MODAL */
+  /* =========================================
+     CORREÇÃO DO CUPOM (FIXED LAYOUT)
+     ========================================= */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+  
   .cupom-box {
-    width: 300px; background: #fffdf0; padding: 20px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000; border: 1px dashed #ccc; margin: 0 auto;
-    /* Sombras para parecer papel */
+    width: 300px; /* Largura fixa ideal para bobina 80mm */
+    background: #fffdf0; 
+    padding: 15px; 
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 13px; 
+    color: #000; 
+    border: 1px dashed #ccc; 
+    margin: 0 auto;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden; /* Garante que nada saia da caixa */
   }
+
   .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
-  .cupom-table { width: 100%; margin-bottom: 10px; font-size: 12px; }
+  
+  /* TABELA FIXA PARA NÃO VAZAR PREÇO */
+  .cupom-table { 
+    width: 100%; 
+    margin-bottom: 10px; 
+    font-size: 12px; 
+    table-layout: fixed; /* OBRIGATÓRIO: Força colunas a obedecerem largura */
+    border-collapse: collapse;
+  }
+  
+  .cupom-table td, .cupom-table th {
+    vertical-align: top;
+    padding: 2px 0;
+    word-wrap: break-word; /* Quebra palavras longas */
+    white-space: normal;
+  }
+
+  /* Larguras das colunas do cupom */
+  .col-item { width: 55%; text-align: left; }
+  .col-qtd { width: 15%; text-align: center; }
+  .col-valor { width: 30%; text-align: right; }
+
   .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
   
+  /* ESTILOS DE IMPRESSÃO (CORRIGIDO) */
   @media print {
     body * { visibility: hidden; }
     #modalCupom, #areaCupom, #areaCupom * { visibility: visible; }
-    #modalCupom { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: white; }
-    #areaCupom { width: 100%; max-width: 100%; border: none; }
+    #modalCupom { 
+        position: absolute; left: 0; top: 0; width: 100%; height: 100%; 
+        background: white; align-items: flex-start; padding-top: 0;
+    }
+    #areaCupom { 
+        width: 100%; max-width: 300px; border: none; box-shadow: none; 
+        padding: 0; margin: 0;
+    }
     .no-print { display: none !important; }
+    @page { margin: 0; size: auto; } /* Remove margens do navegador */
   }
 
   /* MOBILE */
@@ -267,10 +307,19 @@
           <div id="cupomData"></div>
         </div>
         <div style="margin-bottom:10px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div>
+        
         <table class="cupom-table">
-          <thead><tr style="border-bottom:1px dashed #000"><th style="color:#000; padding:2px">ITEM</th><th style="color:#000; padding:2px">QTD</th><th style="color:#000; padding:2px; text-align:right">R$</th></tr></thead>
-          <tbody id="cupomItens"></tbody>
+          <thead>
+            <tr style="border-bottom:1px dashed #000">
+              <th class="col-item" style="color:#000;">ITEM</th>
+              <th class="col-qtd" style="color:#000;">QTD</th>
+              <th class="col-valor" style="color:#000;">R$</th>
+            </tr>
+          </thead>
+          <tbody id="cupomItens">
+            </tbody>
         </table>
+
         <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal">R$ 0,00</span></div>
         <div style="font-size:11px">Pagamento: <span id="cupomPagto"></span></div>
         <div id="cupomParcelas" style="font-size:11px; margin-top:5px; display:none;"></div>
@@ -302,7 +351,7 @@
 <script>
 const db = { get: k => JSON.parse(localStorage.getItem(k))||[], set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) };
 let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [], dataAtual = new Date();
-let vendaAtual = null; // Armazena a venda atual para compartilhar texto
+let vendaAtual = null; 
 
 window.onload = () => { if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); atualizarTudo(); renderCalendar(); };
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
@@ -371,7 +420,7 @@ function gerarCupom(v) {
   document.getElementById("cupomTotal").innerText = formatMoney(v.total);
   document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
   const tb = document.getElementById("cupomItens"); tb.innerHTML = "";
-  v.itens.forEach(i => { tb.innerHTML += `<tr><td style="text-align:left">${i.nome}</td><td style="text-align:center">${i.qtd}</td><td style="text-align:right">${formatMoney(i.sub)}</td></tr>`; });
+  v.itens.forEach(i => { tb.innerHTML += `<tr><td class="col-item">${i.nome}</td><td class="col-qtd">${i.qtd}</td><td class="col-valor">${formatMoney(i.sub)}</td></tr>`; });
   
   const divP = document.getElementById("cupomParcelas");
   if(v.tipo === 'crediario') {
@@ -382,28 +431,17 @@ function gerarCupom(v) {
   document.getElementById("modalCupom").style.display = "flex";
 }
 
-// --- FUNÇÕES DE COMPARTILHAMENTO ---
+// --- SHARE ---
 function compartilharImagem() {
   const area = document.getElementById("areaCupom");
-  // Usa html2canvas para criar a imagem
   html2canvas(area).then(canvas => {
     canvas.toBlob(blob => {
-      const file = new File([blob], "comprovante_resolution.png", { type: "image/png" });
-      
-      // Verifica se o navegador suporta compartilhamento nativo de arquivos
+      const file = new File([blob], "comprovante.png", { type: "image/png" });
       if (navigator.share) {
-        navigator.share({
-          title: 'Comprovante de Venda',
-          text: `Segue o comprovante da compra de ${vendaAtual.cliente}`,
-          files: [file]
-        }).catch(err => console.log('Erro ao compartilhar', err));
+        navigator.share({ title: 'Comprovante', text: `Venda para ${vendaAtual.cliente}`, files: [file] }).catch(err => console.log('Erro', err));
       } else {
-        // Fallback: Baixa a imagem se não der pra compartilhar
-        const link = document.createElement('a');
-        link.download = 'comprovante.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        alert("Imagem baixada! Envie manualmente.");
+        const link = document.createElement('a'); link.download = 'comprovante.png'; link.href = canvas.toDataURL(); link.click();
+        alert("Baixado! Envie manualmente.");
       }
     });
   });
@@ -411,36 +449,18 @@ function compartilharImagem() {
 
 function compartilharZap() {
   if(!vendaAtual) return;
-  // Monta o texto
-  let texto = `🧾 *COMPROVANTE RE SOLUTION*\n`;
-  texto += `Data: ${vendaAtual.dataVenda}\n`;
-  texto += `Cliente: ${vendaAtual.cliente}\n`;
-  texto += `--------------------------------\n`;
-  vendaAtual.itens.forEach(i => {
-    texto += `${i.qtd}x ${i.nome} - ${formatMoney(i.sub)}\n`;
-  });
-  texto += `--------------------------------\n`;
-  texto += `*TOTAL: ${formatMoney(vendaAtual.total)}*\n`;
-  texto += `Pagamento: ${vendaAtual.tipo.toUpperCase()}\n\n`;
-  texto += `Obrigado pela preferência!`;
-
-  // Codifica para URL
+  let texto = `🧾 *COMPROVANTE*\nData: ${vendaAtual.dataVenda}\nCliente: ${vendaAtual.cliente}\n----------------\n`;
+  vendaAtual.itens.forEach(i => { texto += `${i.qtd}x ${i.nome} - ${formatMoney(i.sub)}\n`; });
+  texto += `----------------\n*TOTAL: ${formatMoney(vendaAtual.total)}*\nPgto: ${vendaAtual.tipo.toUpperCase()}\n\nObrigado!`;
   const textoEncoded = encodeURIComponent(texto);
-  
-  // Se tiver telefone do cliente, manda direto, senão abre seleção
   let link = `https://wa.me/?text=${textoEncoded}`;
-  if(vendaAtual.tel) {
-    // Limpa telefone para apenas numeros
-    let tel = vendaAtual.tel.replace(/\D/g,'');
-    if(tel) link = `https://wa.me/${tel}?text=${textoEncoded}`;
-  }
-  
+  if(vendaAtual.tel) { let tel = vendaAtual.tel.replace(/\D/g,''); if(tel) link = `https://wa.me/${tel}?text=${textoEncoded}`; }
   window.open(link, '_blank');
 }
 
 function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; alert("Venda OK!"); navegar('calendario'); }
 
-// --- RESTO DO CRUD ---
+// --- CRUD ---
 function atualizarDashboard() {
   let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) });
   document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t);
