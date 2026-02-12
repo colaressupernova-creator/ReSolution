@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RE Solution - Financeiro Pro</title>
+<title>RE Solution 20.0</title>
 
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
@@ -17,7 +17,7 @@
 <style>
   :root {
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.9);
     --glass-border: 1px solid rgba(255, 255, 255, 0.5);
     --text-dark: #1e293b;
     --text-light: #64748b;
@@ -38,7 +38,7 @@
 
   /* SIDEBAR */
   .sidebar { 
-    width: 280px; background: rgba(255, 255, 255, 0.9);
+    width: 280px; background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px); border-right: var(--glass-border); display: flex; flex-direction: column; 
     padding: 25px; flex-shrink: 0; z-index: 100;
   }
@@ -67,7 +67,7 @@
   /* CARDS */
   .card { 
     background: var(--glass-bg); backdrop-filter: blur(16px);
-    border-radius: 20px; padding: 25px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05); border: var(--glass-border); margin-bottom: 25px; 
+    border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: var(--glass-border); margin-bottom: 25px; 
   }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
@@ -92,25 +92,32 @@
   td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: middle; }
 
   /* BOTOES HISTORICO */
-  .btn-group-action { display: flex; gap: 8px; }
-  .btn-icon { width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-  .btn-print-mini { background: #333; color: white; }
+  .btn-group-action { display: flex; gap: 8px; white-space: nowrap; }
+  .btn-icon { width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s; }
+  .btn-icon:active { transform: scale(0.95); }
+  .btn-print-mini { background: #334155; color: white; }
   .btn-trash-mini { background: #ef4444; color: white; }
 
-  /* ESTILO CARDS A RECEBER */
+  /* ESTILO CARDS A RECEBER (IMPROVED) */
   .receber-card {
     background: #fff; border-left: 5px solid var(--warning);
     border-radius: 12px; padding: 15px; margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   }
-  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
-  .receber-cliente { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
-  .receber-pedido { font-size: 0.85rem; color: var(--text-light); font-family: 'Share Tech Mono', monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px; }
+  .receber-cliente { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+  .receber-pedido { font-size: 0.85rem; color: #64748b; font-family: 'Share Tech Mono', monospace; background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
   
-  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f8fafc; }
-  .receber-info { font-size: 0.9rem; }
-  .receber-btn { background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid #bbf7d0; transition:0.2s; }
-  .receber-btn:hover { background: #166534; color: white; }
+  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f8fafc; }
+  .receber-item:last-child { border-bottom: none; }
+  .receber-info { font-size: 0.95rem; line-height: 1.4; }
+  .receber-btn { 
+    background: #dcfce7; color: #166534; padding: 8px 14px; 
+    border-radius: 8px; font-size: 0.85rem; font-weight: 700; 
+    cursor: pointer; border: 1px solid #bbf7d0; 
+    display: flex; align-items: center; gap: 5px;
+  }
+  .receber-btn:hover { background: #166534; color: white; border-color: #166534; }
 
   /* CUPOM & MODAL */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
@@ -189,9 +196,7 @@
 
     <div id="areceber" class="page">
       <h2>Contas a Receber</h2>
-      <div id="listaRecebimentos">
-        <div style="text-align:center; padding:50px; color:#999;">Nenhuma conta pendente.</div>
-      </div>
+      <div id="listaRecebimentos"></div>
     </div>
 
     <div id="vendas" class="page">
@@ -302,7 +307,6 @@ function finalizarVenda() {
   }
   carrinho.forEach(x=>produtos[x.idOrigem].qtd-=x.qtd); db.set("produtos",produtos);
   const clienteData = clientes[cliIdx];
-  // Gera ID curto (4 ultimos digitos do timestamp)
   const idVenda = '#' + Date.now().toString().slice(-4);
   const novaVenda = {id:Date.now(), idVisivel: idVenda, cliente:clienteData.nome, tel:clienteData.tel, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
   vendas.unshift(novaVenda); db.set("vendas",vendas);
@@ -347,7 +351,6 @@ function fecharCupom() { document.getElementById("modalCupom").style.display = "
 function atualizarDashboard() { 
   let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) }); 
   document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t); 
-
   const tbHist = document.getElementById("tbHistorico"); tbHist.innerHTML="";
   vendas.slice(0, 10).forEach((v, i) => {
     const id = v.idVisivel || '#'+v.id.toString().slice(-4);
@@ -355,63 +358,30 @@ function atualizarDashboard() {
   });
 }
 
-// --- LOGICA A RECEBER ---
 function renderAReceber() {
-  const container = document.getElementById("listaRecebimentos");
-  container.innerHTML = "";
-  let temPendencia = false;
-
+  const container = document.getElementById("listaRecebimentos"); container.innerHTML = ""; let temPendencia = false;
   vendas.forEach((v, vIndex) => {
     if(v.tipo === 'crediario') {
-      // Filtra apenas parcelas NÃO pagas
       const parcelasPendentes = v.parcelas.map((p, pIndex) => ({...p, pIndex})).filter(p => !p.paga);
-      
       if(parcelasPendentes.length > 0) {
-        temPendencia = true;
-        const idPed = v.idVisivel || '#'+v.id.toString().slice(-4);
-        
-        // Cria CARD do Pedido
+        temPendencia = true; const idPed = v.idVisivel || '#'+v.id.toString().slice(-4);
         let htmlParcelas = "";
         parcelasPendentes.forEach(p => {
-           htmlParcelas += `
-             <div class="receber-item">
-               <div class="receber-info">
-                 <span style="font-weight:600">${p.num}ª Parc</span> - ${p.data}<br>
-                 <span style="color:#666">${formatMoney(p.valor)}</span>
-               </div>
-               <button class="receber-btn" onclick="baixarParcela(${vIndex}, ${p.pIndex})">
-                 RECEBER <i class="fas fa-check"></i>
-               </button>
-             </div>
-           `;
+           htmlParcelas += `<div class="receber-item"><div class="receber-info"><span style="font-weight:600">${p.num}ª Parc</span> - ${p.data}<br><span style="color:#666">${formatMoney(p.valor)}</span></div><button class="receber-btn" onclick="baixarParcela(${vIndex}, ${p.pIndex})">RECEBER <i class="fas fa-check"></i></button></div>`;
         });
-
-        const card = document.createElement('div');
-        card.className = "receber-card";
-        card.innerHTML = `
-          <div class="receber-header">
-             <div class="receber-cliente">${v.cliente}</div>
-             <div class="receber-pedido">Pedido ${idPed}</div>
-          </div>
-          <div>${htmlParcelas}</div>
-        `;
+        const card = document.createElement('div'); card.className = "receber-card";
+        card.innerHTML = `<div class="receber-header"><div class="receber-cliente"><i class="fas fa-user-circle"></i> ${v.cliente}</div><div class="receber-pedido">PEDIDO ${idPed}</div></div><div>${htmlParcelas}</div>`;
         container.appendChild(card);
       }
     }
   });
-
-  if(!temPendencia) {
-    container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-style:italic;">Nenhuma conta a receber! 🎉</div>';
-  }
+  if(!temPendencia) container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-style:italic;">Nenhuma conta pendente! 🎉</div>';
 }
 
 function baixarParcela(vIndex, pIndex) {
-  if(confirm("Confirmar recebimento desta parcela?")) {
-    vendas[vIndex].parcelas[pIndex].paga = true;
-    db.set("vendas", vendas);
-    // ATUALIZAÇÃO EM TEMPO REAL
-    renderAReceber(); // Redesenha a tela "A Receber" (a parcela vai sumir)
-    atualizarDashboard(); // Atualiza os saldos lá em cima
+  if(confirm("Confirmar recebimento?")) {
+    vendas[vIndex].parcelas[pIndex].paga = true; db.set("vendas", vendas);
+    renderAReceber(); atualizarDashboard();
   }
 }
 
