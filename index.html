@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RE Solution - Histórico V17</title>
+<title>RE Solution - Cobrança V18</title>
 
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
@@ -17,8 +17,8 @@
 <style>
   :root {
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    --glass-bg: rgba(255, 255, 255, 0.65);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.6);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
     --text-dark: #1e293b;
     --text-light: #64748b;
@@ -39,7 +39,7 @@
 
   /* SIDEBAR */
   .sidebar { 
-    width: 280px; background: rgba(255, 255, 255, 0.8);
+    width: 280px; background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-right: var(--glass-border); display: flex; flex-direction: column; 
     padding: 25px; flex-shrink: 0; z-index: 100;
@@ -59,60 +59,74 @@
   .menu-btn i { width: 24px; text-align: center; font-size: 1.1rem; }
 
   /* CONTENT */
-  .main-content { flex: 1; padding: 30px; overflow-y: auto; overflow-x: hidden; }
+  .main-content { flex: 1; padding: 25px; overflow-y: auto; overflow-x: hidden; }
   .page { display: none; animation: fadeIn 0.4s ease-out; padding-bottom: 100px; }
   .page.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   
-  h2 { margin-top: 0; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  h2 { margin-top: 0; font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
   /* CARDS */
   .card { 
     background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-radius: 20px; padding: 25px; box-shadow: var(--glass-shadow); border: var(--glass-border); margin-bottom: 25px; 
+    border-radius: 20px; padding: 20px; box-shadow: var(--glass-shadow); border: var(--glass-border); margin-bottom: 20px; 
   }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
   
   input, select { 
-    width: 100%; padding: 14px; border: 2px solid rgba(255,255,255,0.8); border-radius: 12px; 
+    width: 100%; padding: 12px; border: 2px solid rgba(255,255,255,0.8); border-radius: 12px; 
     font-size: 1rem; background: rgba(255,255,255,0.6); margin-bottom: 15px; outline: none; transition: 0.3s; 
   }
   input:focus, select:focus { background: white; border-color: #a855f7; }
   
-  button { padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.3s; }
+  button { padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: 0.3s; }
   .btn-primary { background: var(--primary-gradient); color: white; width: 100%; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
   .btn-add { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; width: 100%; }
-  .btn-whatsapp { background: #25D366; color: white; width: 100%; }
-  .btn-share { background: #3b82f6; color: white; width: 100%; }
+  .btn-danger { background: var(--danger); color: white; padding: 8px 15px; font-size: 0.8rem; }
   
-  .dash-value { font-size: 2rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .dash-value { font-size: 1.8rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-  /* CALENDAR & TABLES */
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-  .day-cell { background: rgba(255,255,255,0.6); border-radius: 16px; min-height: 120px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; }
-  .today { border: 2px solid #ec4899; background: rgba(236, 72, 153, 0.05); }
-  .event-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-  .dot-pago { background: var(--success); } .dot-pendente { background: var(--warning); }
+  /* ESTILOS DA NOVA LISTA DE COBRANÇA */
+  .cobranca-section { margin-bottom: 25px; }
+  .cobranca-title { font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .tag-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+  
+  .rec-card {
+    background: rgba(255,255,255,0.8); border-radius: 16px; padding: 15px; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-left: 5px solid #ccc; transition: 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .rec-card:active { transform: scale(0.98); }
+  
+  .rec-atrasado { border-left-color: var(--danger); background: #fff5f5; }
+  .rec-hoje { border-left-color: var(--warning); background: #fffbeb; }
+  .rec-futuro { border-left-color: #3b82f6; }
+  
+  .rec-info h4 { margin: 0; font-size: 1rem; color: var(--text-dark); }
+  .rec-info p { margin: 2px 0 0 0; font-size: 0.85rem; color: var(--text-light); }
+  .rec-valor { font-weight: 700; font-size: 1.1rem; text-align: right; }
+  
+  .btn-receber-mini {
+    background: var(--success); color: white; border: none; padding: 8px 16px; 
+    border-radius: 8px; font-size: 0.8rem; cursor: pointer; margin-left: 10px;
+    box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+  }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+  .cupom-box { width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
+  .cupom-divisoria { border-bottom: 1px dashed #000; margin: 5px 0; }
+  .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
+  
+  /* TABLE */
   .table-responsive { overflow-x: auto; border-radius: 12px; }
   table { width: 100%; border-collapse: collapse; min-width: 600px; }
   th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; }
   td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-  /* CUPOM & MODAL */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
-  
-  .cupom-box {
-    width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
-  .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
-  .cupom-divisoria { border-bottom: 1px dashed #000; margin: 5px 0; }
-  .cupom-lista { list-style: none; padding: 0; margin: 0; }
-  .cupom-item { margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
-  .c-nome { font-weight: bold; display: block; margin-bottom: 2px; text-transform: uppercase; }
-  .c-detalhes { display: flex; justify-content: space-between; font-size: 12px; }
-  .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
-  
   @media print {
     body * { visibility: hidden; }
     #modalCupom, #areaCupom, #areaCupom * { visibility: visible; }
@@ -122,18 +136,16 @@
     @page { margin: 0; }
   }
 
-  /* MOBILE */
   @media (max-width: 768px) {
     body { flex-direction: column; }
-    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; flex-direction: row; justify-content: space-between; padding: 10px 20px; background: rgba(255, 255, 255, 0.95); border-radius: 20px 20px 0 0; z-index: 9999; }
+    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; flex-direction: row; justify-content: space-between; padding: 5px 15px; background: rgba(255, 255, 255, 0.95); border-radius: 20px 20px 0 0; z-index: 9999; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
     .logo { display: none; }
-    .menu-btn { flex: 1; flex-direction: column; justify-content: center; font-size: 0.75rem; padding: 0; background: none !important; color: #94a3b8; box-shadow: none !important; gap: 5px; }
+    .menu-btn { flex: 1; flex-direction: column; justify-content: center; font-size: 0.7rem; padding: 0; background: none !important; color: #94a3b8; box-shadow: none !important; gap: 4px; }
     .menu-btn.active { color: #8b5cf6; }
-    .menu-btn i { font-size: 1.5rem; width: auto; }
+    .menu-btn i { font-size: 1.4rem; width: auto; }
     .menu-btn span { display: block; }
-    .main-content { padding: 20px; padding-bottom: 100px; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 20px; }
-    .calendar-grid { grid-template-columns: 1fr; }
+    .main-content { padding: 15px; padding-bottom: 90px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
   }
 </style>
 </head>
@@ -142,11 +154,10 @@
   <nav class="sidebar">
     <div class="logo"><i class="fas fa-gem"></i> <span>RE Solution</span></div>
     <button class="menu-btn active" onclick="navegar('dashboard', this)"><i class="fas fa-home"></i> <span>Início</span></button>
-    <button class="menu-btn" onclick="navegar('calendario', this)"><i class="fas fa-calendar-alt"></i> <span>Agenda</span></button>
+    <button class="menu-btn" onclick="navegar('recebimentos', this)"><i class="fas fa-hand-holding-usd"></i> <span>A Receber</span></button>
     <button class="menu-btn" onclick="navegar('vendas', this)"><i class="fas fa-shopping-bag"></i> <span>Venda</span></button>
     <button class="menu-btn" onclick="navegar('historico', this)"><i class="fas fa-history"></i> <span>Histórico</span></button>
     <button class="menu-btn" onclick="navegar('clientes', this)"><i class="fas fa-user-friends"></i> <span>Clientes</span></button>
-    <button class="menu-btn" onclick="navegar('produtos', this)"><i class="fas fa-boxes"></i> <span>Estoque</span></button>
   </nav>
 
   <main class="main-content">
@@ -160,30 +171,36 @@
       </div>
     </div>
 
-    <div id="historico" class="page">
-      <h2>Histórico de Vendas</h2>
-      <div class="card">
-        <label>Buscar Cliente</label>
-        <input type="text" id="buscaHist" onkeyup="renderHistorico()" placeholder="Digite o nome...">
+    <div id="recebimentos" class="page">
+      <h2>Central de Recebimentos</h2>
+      
+      <div id="secAtrasados" class="cobranca-section" style="display:none;">
+        <div class="cobranca-title" style="color:var(--danger)">
+          <i class="fas fa-exclamation-circle"></i> Atrasados <span id="countAtrasados" class="tag-count">0</span>
+        </div>
+        <div id="listaAtrasados"></div>
       </div>
-      <div class="card table-responsive">
-        <table style="min-width: 600px;">
-          <thead><tr><th>Data</th><th>Cliente</th><th>Total</th><th>Ações</th></tr></thead>
-          <tbody id="tbHistorico"></tbody>
-        </table>
+
+      <div id="secHoje" class="cobranca-section">
+        <div class="cobranca-title" style="color:var(--warning)">
+          <i class="fas fa-calendar-day"></i> Vence Hoje <span id="countHoje" class="tag-count">0</span>
+        </div>
+        <div id="listaHoje"></div>
+        <div id="msgSemHoje" style="text-align:center; color:#999; padding:20px; display:none;">Nada vencendo hoje!</div>
+      </div>
+
+      <div id="secFuturos" class="cobranca-section">
+        <div class="cobranca-title" style="color:#3b82f6">
+          <i class="fas fa-clock"></i> Próximos 7 Dias <span id="countFuturos" class="tag-count">0</span>
+        </div>
+        <div id="listaFuturos"></div>
       </div>
     </div>
 
-    <div id="calendario" class="page">
-      <div class="calendar-header">
-        <h2 style="margin:0;">Agenda</h2>
-        <div>
-          <button class="btn-primary" style="width:40px; height:40px; padding:0;" onclick="mudarMes(-1)"><i class="fas fa-chevron-left"></i></button>
-          <span id="mesAnoLabel" style="font-weight:700; margin:0 15px;">MÊS</span>
-          <button class="btn-primary" style="width:40px; height:40px; padding:0;" onclick="mudarMes(1)"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
-      <div class="calendar-grid" id="gridDias"></div>
+    <div id="historico" class="page">
+      <h2>Histórico</h2>
+      <div class="card"><label>Buscar Cliente</label><input type="text" id="buscaHist" onkeyup="renderHistorico()" placeholder="Nome..."></div>
+      <div class="card table-responsive"><table style="min-width: 600px;"><thead><tr><th>Data</th><th>Cliente</th><th>Total</th><th>Ações</th></tr></thead><tbody id="tbHistorico"></tbody></table></div>
     </div>
 
     <div id="vendas" class="page">
@@ -191,10 +208,7 @@
       <div class="grid-2">
         <div class="card">
           <label>Produto</label>
-          <div class="grid-2" style="gap:15px; margin-bottom:0;">
-            <select id="selProduto" style="margin-bottom:0;"><option>Carregando...</option></select>
-            <input type="number" id="qtdItem" value="1" min="1" style="margin-bottom:0;">
-          </div>
+          <div class="grid-2" style="gap:15px; margin-bottom:0;"><select id="selProduto" style="margin-bottom:0;"><option>Carregando...</option></select><input type="number" id="qtdItem" value="1" min="1" style="margin-bottom:0;"></div>
           <button class="btn-add" onclick="addCarrinho()" style="margin-top:20px;">Adicionar Item</button>
         </div>
         <div class="card">
@@ -211,10 +225,7 @@
         </div>
         <div id="areaCrediario" style="display:none; background:rgba(99, 102, 241, 0.05); padding:20px; border-radius:12px; margin-bottom:20px;">
           <h4 style="margin:0 0 15px 0;">Parcelamento</h4>
-          <div class="grid-2">
-            <div><label>Qtd</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></div>
-            <div><label>1ª Parcela</label><input type="date" id="dataPrimeira"></div>
-          </div>
+          <div class="grid-2"><div><label>Qtd</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></div><div><label>1ª Parcela</label><input type="date" id="dataPrimeira"></div></div>
         </div>
         <button class="btn-primary" onclick="finalizarVenda()" style="font-size:1.1rem; padding:18px;">FINALIZAR VENDA</button>
       </div>
@@ -241,155 +252,145 @@
 
   <div id="modalCupom" class="modal-overlay">
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-      
       <div id="areaCupom" class="cupom-box">
-        <div class="cupom-header">
-          <div style="font-size:16px; font-weight:bold;">RE SOLUTION</div>
-          <div>Comprovante de Venda</div>
-          <div id="cupomData"></div>
-        </div>
-        <div style="margin-bottom:5px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div>
-        <div class="cupom-divisoria"></div>
-        
+        <div class="cupom-header"><div style="font-size:16px; font-weight:bold;">RE SOLUTION</div><div>Comprovante de Venda</div><div id="cupomData"></div></div>
+        <div style="margin-bottom:5px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div><div class="cupom-divisoria"></div>
         <div id="cupomLista" class="cupom-lista"></div>
-
         <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal">R$ 0,00</span></div>
         <div style="font-size:11px">Pagamento: <span id="cupomPagto"></span></div>
         <div id="cupomParcelas" style="font-size:11px; margin-top:5px; display:none;"></div>
         <div style="text-align:center; margin-top:15px; font-size:10px;">Obrigado pela preferência!</div>
       </div>
-
       <div class="no-print" style="margin-top:15px; display:flex; flex-direction:column; gap:10px; width:300px;">
-        <button class="btn-share" onclick="compartilharImagem()"><i class="fas fa-share-alt"></i> Compartilhar Comprovante</button>
-        <button class="btn-whatsapp" onclick="compartilharZap()"><i class="fab fa-whatsapp"></i> Enviar Texto no Zap</button>
+        <button class="btn-share" onclick="compartilharImagem()"><i class="fas fa-share-alt"></i> Compartilhar Imagem</button>
+        <button class="btn-whatsapp" onclick="compartilharZap()"><i class="fab fa-whatsapp"></i> Enviar Texto</button>
         <button class="btn-primary" style="background:#333;" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
         <button class="btn-add" style="background:#ef4444;" onclick="fecharCupom()"><i class="fas fa-times"></i> Fechar</button>
       </div>
     </div>
   </div>
 
-  <div id="modalDia" class="modal-overlay" onclick="fecharModal(event)">
-    <div class="modal-card">
-      <div class="modal-header"><h3 id="tituloModalDia" style="margin:0">Recebimentos</h3><button onclick="document.getElementById('modalDia').style.display='none'" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button></div>
-      <div class="modal-body"><div class="table-responsive"><table style="width:100%;"><thead><tr><th>Cliente</th><th>Valor</th><th>Ação</th></tr></thead><tbody id="listaParcelasDia"></tbody></table></div></div>
-    </div>
-  </div>
-
 <script>
 const db = { get: k => JSON.parse(localStorage.getItem(k))||[], set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) };
-let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [], dataAtual = new Date();
-let vendaAtual = null; 
+let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [], vendaAtual = null;
 
-window.onload = () => { if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); atualizarTudo(); renderCalendar(); };
+window.onload = () => { if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); atualizarTudo(); renderRecebimentos(); };
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
 function navegar(id, btn) { 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); 
   document.getElementById(id).classList.add('active'); 
   if(btn) btn.classList.add('active'); 
-  if(id === 'calendario') renderCalendar();
-  if(id === 'historico') renderHistorico(); 
+  if(id === 'recebimentos') renderRecebimentos();
+  if(id === 'historico') renderHistorico();
+}
+
+// --- LOGICA FINANCEIRA OTIMIZADA ---
+function renderRecebimentos() {
+  const atrEl = document.getElementById('listaAtrasados'), hojeEl = document.getElementById('listaHoje'), futEl = document.getElementById('listaFuturos');
+  atrEl.innerHTML = ''; hojeEl.innerHTML = ''; futEl.innerHTML = '';
+  
+  let cAtr = 0, cHoje = 0, cFut = 0;
+  const hojeStr = new Date().toLocaleDateString('pt-BR'); // DD/MM/AAAA
+  
+  // Função auxiliar para converter "DD/MM/AAAA" em Date object para comparação
+  const strToDate = (s) => { const p=s.split('/'); return new Date(p[2], p[1]-1, p[0]); };
+  const dataHoje = new Date(); dataHoje.setHours(0,0,0,0);
+
+  // Coleta todas parcelas pendentes
+  let parcelasGeral = [];
+  vendas.forEach((v, vIndex) => {
+    if(v.tipo === 'crediario' && v.parcelas) {
+      v.parcelas.forEach((p, pIndex) => {
+        if(!p.paga) {
+          parcelasGeral.push({ ...p, cliente: v.cliente, vIndex, pIndex, dateObj: strToDate(p.data) });
+        }
+      });
+    }
+  });
+
+  // Ordena por data (mais antigo primeiro)
+  parcelasGeral.sort((a,b) => a.dateObj - b.dateObj);
+
+  parcelasGeral.forEach(item => {
+    const cardHTML = `
+      <div class="rec-card ${item.dateObj < dataHoje ? 'rec-atrasado' : (item.data === hojeStr ? 'rec-hoje' : 'rec-futuro')}">
+        <div class="rec-info">
+          <h4>${item.cliente}</h4>
+          <p>${item.num}ª Parcela • ${item.data}</p>
+        </div>
+        <div style="display:flex; align-items:center;">
+          <div class="rec-valor">${formatMoney(item.valor)}</div>
+          <button class="btn-receber-mini" onclick="baixarParcela(${item.vIndex}, ${item.pIndex})"><i class="fas fa-check"></i></button>
+        </div>
+      </div>
+    `;
+
+    if (item.dateObj < dataHoje) { atrEl.innerHTML += cardHTML; cAtr++; }
+    else if (item.data === hojeStr) { hojeEl.innerHTML += cardHTML; cHoje++; }
+    else { futEl.innerHTML += cardHTML; cFut++; }
+  });
+
+  document.getElementById('countAtrasados').innerText = cAtr;
+  document.getElementById('countHoje').innerText = cHoje;
+  document.getElementById('countFuturos').innerText = cFut;
+  
+  document.getElementById('secAtrasados').style.display = cAtr > 0 ? 'block' : 'none';
+  document.getElementById('msgSemHoje').style.display = cHoje === 0 ? 'block' : 'none';
+}
+
+function baixarParcela(vi, pi) {
+  if(confirm("Confirmar o recebimento deste valor?")) {
+    vendas[vi].parcelas[pi].paga = true;
+    db.set("vendas", vendas);
+    renderRecebimentos();
+    atualizarTudo();
+    alert("Recebido com sucesso!");
+  }
 }
 
 // --- HISTÓRICO ---
 function renderHistorico() {
   const termo = document.getElementById('buscaHist').value.toLowerCase();
-  const tb = document.getElementById('tbHistorico');
-  tb.innerHTML = '';
+  const tb = document.getElementById('tbHistorico'); tb.innerHTML = '';
   vendas.forEach(v => {
     if(v.cliente.toLowerCase().includes(termo)) {
-      tb.innerHTML += `
-        <tr>
-          <td>${v.dataVenda.split(' ')[0]}</td>
-          <td>${v.cliente}</td>
-          <td style="font-weight:bold">${formatMoney(v.total)}</td>
-          <td>
-            <button class="btn-primary" style="padding:5px 10px; font-size:0.8rem; width:auto;" onclick="reimprimir(${v.id})"><i class="fas fa-print"></i></button>
-            <button class="btn-add" style="padding:5px 10px; font-size:0.8rem; width:auto; background:var(--danger);" onclick="deletarVenda(${v.id})"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>
-      `;
+      tb.innerHTML += `<tr><td>${v.dataVenda.split(' ')[0]}</td><td>${v.cliente}</td><td style="font-weight:bold">${formatMoney(v.total)}</td><td><button class="btn-primary" style="padding:5px 10px; font-size:0.8rem;" onclick="reimprimir(${v.id})"><i class="fas fa-print"></i></button> <button class="btn-danger" style="padding:5px 10px; font-size:0.8rem;" onclick="deletarVenda(${v.id})"><i class="fas fa-trash"></i></button></td></tr>`;
     }
   });
 }
+function reimprimir(id) { const v = vendas.find(x => x.id === id); if(v) { vendaAtual=v; gerarCupom(v); } }
+function deletarVenda(id) { if(confirm("Apagar venda permanentemente?")) { vendas = vendas.filter(v => v.id !== id); db.set("vendas", vendas); renderHistorico(); atualizarTudo(); } }
 
-function reimprimir(id) {
-  const venda = vendas.find(v => v.id === id);
-  if(venda) {
-    vendaAtual = venda;
-    gerarCupom(venda);
-  }
-}
-
-function deletarVenda(id) {
-  if(confirm("Deseja realmente apagar esta venda? Isso não pode ser desfeito.")) {
-    vendas = vendas.filter(v => v.id !== id);
-    db.set("vendas", vendas);
-    renderHistorico();
-    atualizarTudo();
-  }
-}
-
-// --- OUTRAS FUNÇÕES ---
-function mudarMes(d) { dataAtual.setMonth(dataAtual.getMonth()+d); renderCalendar(); }
-function renderCalendar() {
-  const grid=document.getElementById("gridDias"); if(!grid) return; grid.innerHTML=''; const a=dataAtual.getFullYear(), m=dataAtual.getMonth();
-  document.getElementById("mesAnoLabel").innerText = new Date(a,m).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
-  const primeiro=new Date(a,m,1).getDay(), total=new Date(a,m+1,0).getDate();
-  for(let i=0;i<primeiro;i++) grid.appendChild(document.createElement('div'));
-  for(let i=1;i<=total;i++) {
-    const d=document.createElement('div'), dateStr=new Date(a,m,i).toLocaleDateString('pt-BR'); d.className='day-cell'; if(i===new Date().getDate()&&m===new Date().getMonth()) d.classList.add('today');
-    let p=0,pg=0; vendas.forEach(v=>{if(v.tipo==='crediario'&&v.parcelas) v.parcelas.forEach(px=>{if(px.data===dateStr){if(px.paga) pg++; else p++;}})});
-    d.innerHTML=`<span class="day-number">${i}</span>${(p>0||pg>0)?`<div class="day-summary">${p>0?`<div><span class="event-dot dot-pendente"></span>${p}</div>`:''}${pg>0?`<div><span class="event-dot dot-pago"></span>${pg}</div>`:''}</div>`:''}`;
-    d.onclick=()=>abrirModalDia(dateStr); grid.appendChild(d);
-  }
-}
-
+// --- VENDAS ---
 function addCarrinho() { const i=document.getElementById("selProduto").value, q=parseInt(document.getElementById("qtdItem").value); if(!i||q<1) return alert("Erro"); const p=produtos[i]; carrinho.push({idOrigem:i, nome:p.nome, preco:p.preco, qtd:q, sub:p.preco*q}); renderCarrinho(); }
 function renderCarrinho() { const tb=document.getElementById("tbCarrinho"); tb.innerHTML=""; let t=0; carrinho.forEach(c=>{t+=c.sub; tb.innerHTML+=`<tr><td>${c.nome}</td><td>${c.qtd}</td><td>${formatMoney(c.sub)}</td></tr>`}); document.getElementById("totalCarrinho").innerText=formatMoney(t); document.getElementById("cardFinalizar").style.display=t>0?'block':'none'; }
 function toggleCrediario() { document.getElementById("areaCrediario").style.display=document.getElementById("tipoPagamento").value==='crediario'?'block':'none'; }
-
 function finalizarVenda() {
   const cliIdx=document.getElementById("selCliente").value; if(!cliIdx) return alert("Cliente?");
   const total=carrinho.reduce((a,b)=>a+b.sub,0), tipo=document.getElementById("tipoPagamento").value;
-  let parcelas=[];
-  if(tipo==='crediario') {
-    const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db=new Date(dt+'T12:00:00');
-    for(let i=0;i<qtd;i++) { let d=new Date(db); d.setDate(d.getDate()+(i*30)); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); }
-  }
+  let parcelas=[]; if(tipo==='crediario') { const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db=new Date(dt+'T12:00:00'); for(let i=0;i<qtd;i++) { let d=new Date(db); d.setDate(d.getDate()+(i*30)); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); } }
   carrinho.forEach(x=>produtos[x.idOrigem].qtd-=x.qtd); db.set("produtos",produtos);
-  const clienteData = clientes[cliIdx];
-  const novaVenda = {id:Date.now(), cliente:clienteData.nome, tel:clienteData.tel, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
-  vendas.unshift(novaVenda); db.set("vendas",vendas);
-  vendaAtual = novaVenda; gerarCupom(novaVenda); carrinho=[]; renderCarrinho(); atualizarTudo();
+  const clienteData = clientes[cliIdx]; const novaVenda = {id:Date.now(), cliente:clienteData.nome, tel:clienteData.tel, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
+  vendas.unshift(novaVenda); db.set("vendas",vendas); vendaAtual = novaVenda; gerarCupom(novaVenda); carrinho=[]; renderCarrinho(); atualizarTudo();
 }
-
 function gerarCupom(v) {
-  document.getElementById("cupomData").innerText = v.dataVenda;
-  document.getElementById("cupomCliente").innerText = v.cliente;
-  document.getElementById("cupomTotal").innerText = formatMoney(v.total);
-  document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
+  document.getElementById("cupomData").innerText = v.dataVenda; document.getElementById("cupomCliente").innerText = v.cliente; document.getElementById("cupomTotal").innerText = formatMoney(v.total); document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
   const lista = document.getElementById("cupomLista"); lista.innerHTML = "";
-  v.itens.forEach(i => {
-    lista.innerHTML += `<div class="cupom-item"><span class="c-nome">${i.nome}</span><div class="c-detalhes"><span>${i.qtd} x ${formatMoney(i.preco)}</span><span>${formatMoney(i.sub)}</span></div></div>`;
-  });
-  const divP = document.getElementById("cupomParcelas");
-  if(v.tipo === 'crediario') { divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>"; v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else divP.style.display='none';
+  v.itens.forEach(i => { lista.innerHTML += `<div class="cupom-item"><span class="c-nome">${i.nome}</span><div class="c-detalhes"><span>${i.qtd} x ${formatMoney(i.preco)}</span><span>${formatMoney(i.sub)}</span></div></div>`; });
+  const divP = document.getElementById("cupomParcelas"); if(v.tipo === 'crediario') { divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>"; v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else divP.style.display='none';
   document.getElementById("modalCupom").style.display = "flex";
 }
-
 function compartilharImagem() { const area = document.getElementById("areaCupom"); html2canvas(area).then(canvas => { canvas.toBlob(blob => { const file = new File([blob], "comprovante.png", { type: "image/png" }); if (navigator.share) navigator.share({ title: 'Comprovante', files: [file] }).catch(err => console.log(err)); else { const link = document.createElement('a'); link.download = 'comprovante.png'; link.href = canvas.toDataURL(); link.click(); } }); }); }
 function compartilharZap() { if(!vendaAtual) return; let texto = `🧾 *COMPROVANTE*\nData: ${vendaAtual.dataVenda}\nCliente: ${vendaAtual.cliente}\n----------------\n`; vendaAtual.itens.forEach(i => { texto += `${i.qtd}x ${i.nome}\nValor: ${formatMoney(i.sub)}\n`; }); texto += `----------------\n*TOTAL: ${formatMoney(vendaAtual.total)}*\nPgto: ${vendaAtual.tipo.toUpperCase()}`; const link = `https://wa.me/?text=${encodeURIComponent(texto)}`; window.open(link, '_blank'); }
-function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; }
+function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; alert("Operação OK!"); }
 
+// --- CRUD SYSTEM ---
 function atualizarDashboard() { let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) }); document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t); }
 function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value; if(n){clientes.push({nome:n, tel:t}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value="";} }
 function addProduto() { const n=document.getElementById("nomeProd").value, p=document.getElementById("precoProd").value, q=document.getElementById("qtdProd").value; if(n){produtos.push({nome:n, preco:p, qtd:q}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo");} }
 function deletar(t,i) { if(confirm("Apagar?")){ if(t==='c') clientes.splice(i,1); else produtos.splice(i,1); db.set("clientes",clientes); db.set("produtos",produtos); atualizarTudo();} }
 function atualizarTudo() { atualizarDashboard(); const sc=document.getElementById("selCliente"); sc.innerHTML="<option value=''>Cliente...</option>"; clientes.forEach((c,i)=>sc.innerHTML+=`<option value="${i}">${c.nome}</option>`); const sp=document.getElementById("selProduto"); sp.innerHTML="<option value=''>Produto...</option>"; produtos.forEach((p,i)=>sp.innerHTML+=`<option value="${i}">${p.nome}</option>`); const tc=document.getElementById("tbClientes"); tc.innerHTML=""; clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td>${c.tel}</td><td><button onclick="deletar('c',${i})">X</button></td></tr>`); const tp=document.getElementById("tbProdutos"); tp.innerHTML=""; produtos.forEach((p,i)=>tp.innerHTML+=`<tr><td>${p.nome}</td><td>${formatMoney(p.preco)}</td><td>${p.qtd}</td><td><button onclick="deletar('p',${i})">X</button></td></tr>`); }
-function abrirModalDia(d){ document.getElementById("tituloModalDia").innerText=`Dia ${d}`; const tb=document.getElementById("listaParcelasDia"); tb.innerHTML=""; vendas.forEach((v,vi)=>{if(v.tipo==='crediario'&&v.parcelas) v.parcelas.forEach((p,pi)=>{ if(p.data===d) tb.innerHTML+=`<tr><td>${v.cliente}</td><td>${formatMoney(p.valor)}</td><td>${p.paga?'OK':`<button onclick="receber(${vi},${pi},'${d}')">Receber</button>`}</td></tr>` })}); document.getElementById("modalDia").style.display="flex"; }
-function receber(vi,pi,d){ if(confirm("Receber?")){vendas[vi].parcelas[pi].paga=true; db.set("vendas",vendas); abrirModalDia(d); atualizarTudo(); renderCalendar();} }
-function fecharModal(e){ if(e.target.id==='modalDia') e.target.style.display='none'; }
 </script>
 </body>
 </html>
