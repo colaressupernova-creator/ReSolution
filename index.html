@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RE Solution - PDV Pro</title>
+<title>RE Solution - Histórico V17</title>
 
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
@@ -99,46 +99,20 @@
   th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; }
   td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
 
-  /* =========================================
-     NOVO ESTILO CUPOM (VALOR EMBAIXO)
-     ========================================= */
+  /* CUPOM & MODAL */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
   
   .cupom-box {
-    width: 300px; /* Largura padrão térmica 80mm */
-    background: #fffdf0; 
-    padding: 15px; 
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 13px; 
-    color: #000; 
-    border: 1px dashed #ccc; 
-    margin: 0 auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
-
   .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
   .cupom-divisoria { border-bottom: 1px dashed #000; margin: 5px 0; }
-
-  /* ESTILO LISTA DE PRODUTOS */
   .cupom-lista { list-style: none; padding: 0; margin: 0; }
   .cupom-item { margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
-  
-  .c-nome { 
-    font-weight: bold; 
-    display: block; 
-    margin-bottom: 2px;
-    text-transform: uppercase;
-  }
-  
-  .c-detalhes { 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 12px; 
-  }
-
+  .c-nome { font-weight: bold; display: block; margin-bottom: 2px; text-transform: uppercase; }
+  .c-detalhes { display: flex; justify-content: space-between; font-size: 12px; }
   .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
   
-  /* IMPRESSÃO */
   @media print {
     body * { visibility: hidden; }
     #modalCupom, #areaCupom, #areaCupom * { visibility: visible; }
@@ -151,11 +125,7 @@
   /* MOBILE */
   @media (max-width: 768px) {
     body { flex-direction: column; }
-    .sidebar { 
-      position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; 
-      flex-direction: row; justify-content: space-between; padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.95); border-radius: 20px 20px 0 0; z-index: 9999;
-    }
+    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; flex-direction: row; justify-content: space-between; padding: 10px 20px; background: rgba(255, 255, 255, 0.95); border-radius: 20px 20px 0 0; z-index: 9999; }
     .logo { display: none; }
     .menu-btn { flex: 1; flex-direction: column; justify-content: center; font-size: 0.75rem; padding: 0; background: none !important; color: #94a3b8; box-shadow: none !important; gap: 5px; }
     .menu-btn.active { color: #8b5cf6; }
@@ -174,6 +144,7 @@
     <button class="menu-btn active" onclick="navegar('dashboard', this)"><i class="fas fa-home"></i> <span>Início</span></button>
     <button class="menu-btn" onclick="navegar('calendario', this)"><i class="fas fa-calendar-alt"></i> <span>Agenda</span></button>
     <button class="menu-btn" onclick="navegar('vendas', this)"><i class="fas fa-shopping-bag"></i> <span>Venda</span></button>
+    <button class="menu-btn" onclick="navegar('historico', this)"><i class="fas fa-history"></i> <span>Histórico</span></button>
     <button class="menu-btn" onclick="navegar('clientes', this)"><i class="fas fa-user-friends"></i> <span>Clientes</span></button>
     <button class="menu-btn" onclick="navegar('produtos', this)"><i class="fas fa-boxes"></i> <span>Estoque</span></button>
   </nav>
@@ -186,6 +157,20 @@
         <div class="card" style="border-left: 4px solid var(--success);"><label>Recebido</label><div class="dash-value" id="dashReceita" style="color:var(--success)">R$ 0,00</div></div>
         <div class="card" style="border-left: 4px solid var(--warning);"><label>A Receber</label><div class="dash-value" id="dashPendente" style="color:var(--warning)">R$ 0,00</div></div>
         <div class="card" style="border-left: 4px solid #6366f1;"><label>Total Vendas</label><div class="dash-value" id="dashTotal" style="color:#6366f1">R$ 0,00</div></div>
+      </div>
+    </div>
+
+    <div id="historico" class="page">
+      <h2>Histórico de Vendas</h2>
+      <div class="card">
+        <label>Buscar Cliente</label>
+        <input type="text" id="buscaHist" onkeyup="renderHistorico()" placeholder="Digite o nome...">
+      </div>
+      <div class="card table-responsive">
+        <table style="min-width: 600px;">
+          <thead><tr><th>Data</th><th>Cliente</th><th>Total</th><th>Ações</th></tr></thead>
+          <tbody id="tbHistorico"></tbody>
+        </table>
       </div>
     </div>
 
@@ -266,8 +251,7 @@
         <div style="margin-bottom:5px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div>
         <div class="cupom-divisoria"></div>
         
-        <div id="cupomLista" class="cupom-lista">
-          </div>
+        <div id="cupomLista" class="cupom-lista"></div>
 
         <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal">R$ 0,00</span></div>
         <div style="font-size:11px">Pagamento: <span id="cupomPagto"></span></div>
@@ -281,7 +265,6 @@
         <button class="btn-primary" style="background:#333;" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
         <button class="btn-add" style="background:#ef4444;" onclick="fecharCupom()"><i class="fas fa-times"></i> Fechar</button>
       </div>
-
     </div>
   </div>
 
@@ -299,7 +282,55 @@ let vendaAtual = null;
 
 window.onload = () => { if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); atualizarTudo(); renderCalendar(); };
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
-function navegar(id, btn) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); if(btn) btn.classList.add('active'); if(id === 'calendario') renderCalendar(); }
+function navegar(id, btn) { 
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); 
+  document.getElementById(id).classList.add('active'); 
+  if(btn) btn.classList.add('active'); 
+  if(id === 'calendario') renderCalendar();
+  if(id === 'historico') renderHistorico(); 
+}
+
+// --- HISTÓRICO ---
+function renderHistorico() {
+  const termo = document.getElementById('buscaHist').value.toLowerCase();
+  const tb = document.getElementById('tbHistorico');
+  tb.innerHTML = '';
+  vendas.forEach(v => {
+    if(v.cliente.toLowerCase().includes(termo)) {
+      tb.innerHTML += `
+        <tr>
+          <td>${v.dataVenda.split(' ')[0]}</td>
+          <td>${v.cliente}</td>
+          <td style="font-weight:bold">${formatMoney(v.total)}</td>
+          <td>
+            <button class="btn-primary" style="padding:5px 10px; font-size:0.8rem; width:auto;" onclick="reimprimir(${v.id})"><i class="fas fa-print"></i></button>
+            <button class="btn-add" style="padding:5px 10px; font-size:0.8rem; width:auto; background:var(--danger);" onclick="deletarVenda(${v.id})"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
+    }
+  });
+}
+
+function reimprimir(id) {
+  const venda = vendas.find(v => v.id === id);
+  if(venda) {
+    vendaAtual = venda;
+    gerarCupom(venda);
+  }
+}
+
+function deletarVenda(id) {
+  if(confirm("Deseja realmente apagar esta venda? Isso não pode ser desfeito.")) {
+    vendas = vendas.filter(v => v.id !== id);
+    db.set("vendas", vendas);
+    renderHistorico();
+    atualizarTudo();
+  }
+}
+
+// --- OUTRAS FUNÇÕES ---
 function mudarMes(d) { dataAtual.setMonth(dataAtual.getMonth()+d); renderCalendar(); }
 function renderCalendar() {
   const grid=document.getElementById("gridDias"); if(!grid) return; grid.innerHTML=''; const a=dataAtual.getFullYear(), m=dataAtual.getMonth();
@@ -338,51 +369,18 @@ function gerarCupom(v) {
   document.getElementById("cupomCliente").innerText = v.cliente;
   document.getElementById("cupomTotal").innerText = formatMoney(v.total);
   document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
-  
-  // NOVA LOGICA DE ITENS (LINHA A LINHA)
-  const lista = document.getElementById("cupomLista"); 
-  lista.innerHTML = "";
-  
+  const lista = document.getElementById("cupomLista"); lista.innerHTML = "";
   v.itens.forEach(i => {
-    // Cria o bloco do item
-    lista.innerHTML += `
-      <div class="cupom-item">
-        <span class="c-nome">${i.nome}</span>
-        <div class="c-detalhes">
-          <span>${i.qtd} x ${formatMoney(i.preco)}</span>
-          <span>${formatMoney(i.sub)}</span>
-        </div>
-      </div>
-    `;
+    lista.innerHTML += `<div class="cupom-item"><span class="c-nome">${i.nome}</span><div class="c-detalhes"><span>${i.qtd} x ${formatMoney(i.preco)}</span><span>${formatMoney(i.sub)}</span></div></div>`;
   });
-  
   const divP = document.getElementById("cupomParcelas");
-  if(v.tipo === 'crediario') {
-    divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>";
-    v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`);
-  } else divP.style.display='none';
+  if(v.tipo === 'crediario') { divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>"; v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else divP.style.display='none';
   document.getElementById("modalCupom").style.display = "flex";
 }
 
-function compartilharImagem() {
-  const area = document.getElementById("areaCupom");
-  html2canvas(area).then(canvas => {
-    canvas.toBlob(blob => {
-      const file = new File([blob], "comprovante.png", { type: "image/png" });
-      if (navigator.share) navigator.share({ title: 'Comprovante', files: [file] }).catch(err => console.log(err));
-      else { const link = document.createElement('a'); link.download = 'comprovante.png'; link.href = canvas.toDataURL(); link.click(); }
-    });
-  });
-}
-function compartilharZap() {
-  if(!vendaAtual) return;
-  let texto = `🧾 *COMPROVANTE*\nData: ${vendaAtual.dataVenda}\nCliente: ${vendaAtual.cliente}\n----------------\n`;
-  vendaAtual.itens.forEach(i => { texto += `${i.qtd}x ${i.nome}\nValor: ${formatMoney(i.sub)}\n`; });
-  texto += `----------------\n*TOTAL: ${formatMoney(vendaAtual.total)}*\nPgto: ${vendaAtual.tipo.toUpperCase()}`;
-  const link = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(link, '_blank');
-}
-function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; alert("Venda OK!"); navegar('calendario'); }
+function compartilharImagem() { const area = document.getElementById("areaCupom"); html2canvas(area).then(canvas => { canvas.toBlob(blob => { const file = new File([blob], "comprovante.png", { type: "image/png" }); if (navigator.share) navigator.share({ title: 'Comprovante', files: [file] }).catch(err => console.log(err)); else { const link = document.createElement('a'); link.download = 'comprovante.png'; link.href = canvas.toDataURL(); link.click(); } }); }); }
+function compartilharZap() { if(!vendaAtual) return; let texto = `🧾 *COMPROVANTE*\nData: ${vendaAtual.dataVenda}\nCliente: ${vendaAtual.cliente}\n----------------\n`; vendaAtual.itens.forEach(i => { texto += `${i.qtd}x ${i.nome}\nValor: ${formatMoney(i.sub)}\n`; }); texto += `----------------\n*TOTAL: ${formatMoney(vendaAtual.total)}*\nPgto: ${vendaAtual.tipo.toUpperCase()}`; const link = `https://wa.me/?text=${encodeURIComponent(texto)}`; window.open(link, '_blank'); }
+function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; }
 
 function atualizarDashboard() { let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) }); document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t); }
 function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value; if(n){clientes.push({nome:n, tel:t}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value="";} }
