@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RE Solution 20.0</title>
+<title>RE Solution - Ultimate Dark</title>
 
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
@@ -16,14 +16,31 @@
 
 <style>
   :root {
+    /* MODO CLARO (Default) */
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --body-bg: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
     --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --sidebar-bg: rgba(255, 255, 255, 0.95);
+    --card-bg: #ffffff;
     --text-dark: #1e293b;
     --text-light: #64748b;
+    --table-header: rgba(99, 102, 241, 0.1);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
+  }
+
+  [data-theme="dark"] {
+    --body-bg: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #1e1b4b);
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --sidebar-bg: rgba(15, 23, 42, 0.95);
+    --card-bg: #1e293b;
+    --text-dark: #f1f5f9;
+    --text-light: #94a3b8;
+    --table-header: rgba(99, 102, 241, 0.2);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -31,22 +48,22 @@
   body { 
     font-family: 'Poppins', sans-serif; margin: 0; display: flex; height: 100vh; 
     color: var(--text-dark); overflow: hidden; 
-    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
-    background-size: 400% 400%; animation: blushAnimation 15s ease infinite;
+    background: var(--body-bg); background-size: 400% 400%; animation: blushAnimation 15s ease infinite;
+    transition: background 0.5s ease;
   }
   @keyframes blushAnimation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
   /* SIDEBAR */
   .sidebar { 
-    width: 280px; background: rgba(255, 255, 255, 0.95);
+    width: 280px; background: var(--sidebar-bg);
     backdrop-filter: blur(20px); border-right: var(--glass-border); display: flex; flex-direction: column; 
-    padding: 25px; flex-shrink: 0; z-index: 100;
+    padding: 25px; flex-shrink: 0; z-index: 100; transition: all 0.3s ease;
   }
-  .logo { 
-    font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; 
-    background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    display: flex; align-items: center; gap: 10px; 
-  }
+  .logo { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: space-between; }
+  
+  .dark-toggle { cursor: pointer; color: var(--text-light); font-size: 1.2rem; transition: 0.3s; }
+  .dark-toggle:hover { color: #f59e0b; }
+
   .menu-btn { 
     background: transparent; border: none; color: var(--text-light); padding: 14px 18px; 
     display: flex; align-items: center; justify-content: flex-start; gap: 15px; 
@@ -54,7 +71,6 @@
   }
   .menu-btn:hover { background: rgba(99, 102, 241, 0.1); color: #6366f1; transform: translateX(5px); }
   .menu-btn.active { background: var(--primary-gradient); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-  .menu-btn i { width: 24px; text-align: center; font-size: 1.1rem; }
 
   /* CONTENT */
   .main-content { flex: 1; padding: 30px; overflow-y: auto; overflow-x: hidden; }
@@ -64,108 +80,77 @@
   
   h2 { margin-top: 0; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; }
 
-  /* CARDS */
+  /* CARDS COM EFEITO FLUTUAR */
   .card { 
     background: var(--glass-bg); backdrop-filter: blur(16px);
-    border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: var(--glass-border); margin-bottom: 25px; 
+    border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: var(--glass-border); 
+    margin-bottom: 25px; transition: all 0.3s ease;
   }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   
   input, select { 
-    width: 100%; padding: 14px; border: 2px solid rgba(255,255,255,0.8); border-radius: 12px; 
-    font-size: 1rem; background: rgba(255,255,255,0.6); margin-bottom: 15px; outline: none; transition: 0.3s; 
+    width: 100%; padding: 14px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; 
+    font-size: 1rem; background: rgba(255,255,255,0.1); color: var(--text-dark); margin-bottom: 15px; outline: none; transition: 0.3s; 
   }
-  input:focus, select:focus { background: white; border-color: #a855f7; }
+  input:focus, select:focus { background: var(--card-bg); border-color: #a855f7; }
   
   button { padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.3s; }
   .btn-primary { background: var(--primary-gradient); color: white; width: 100%; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-  .btn-add { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; width: 100%; }
-  .btn-whatsapp { background: #25D366; color: white; width: 100%; }
-  .btn-share { background: #3b82f6; color: white; width: 100%; }
-  
-  .dash-value { font-size: 2rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-  .table-responsive { overflow-x: auto; border-radius: 12px; }
+  /* TABELAS */
+  .table-responsive { overflow-x: auto; border-radius: 12px; background: rgba(255,255,255,0.05); }
   table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; }
-  td { padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: middle; }
+  th { background: var(--table-header); color: #6366f1; padding: 15px; text-align: center; }
+  td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; text-align: left; }
+  tbody tr { transition: 0.2s; }
+  tbody tr:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.005); }
 
-  /* BOTOES HISTORICO */
-  .btn-group-action { display: flex; gap: 8px; white-space: nowrap; }
-  .btn-icon { width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s; }
-  .btn-icon:active { transform: scale(0.95); }
+  /* BOTÕES HISTÓRICO */
+  .btn-group-action { display: flex; gap: 8px; justify-content: center; }
+  .btn-icon { width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; border: none; transition: 0.2s; }
   .btn-print-mini { background: #334155; color: white; }
   .btn-trash-mini { background: #ef4444; color: white; }
 
-  /* ESTILO CARDS A RECEBER (IMPROVED) */
+  /* RECEBER CARDS */
   .receber-card {
-    background: #fff; border-left: 5px solid var(--warning);
+    background: var(--card-bg); border-left: 5px solid var(--warning);
     border-radius: 12px; padding: 15px; margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
   }
-  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px; }
-  .receber-cliente { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
-  .receber-pedido { font-size: 0.85rem; color: #64748b; font-family: 'Share Tech Mono', monospace; background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-  
-  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f8fafc; }
-  .receber-item:last-child { border-bottom: none; }
-  .receber-info { font-size: 0.95rem; line-height: 1.4; }
-  .receber-btn { 
-    background: #dcfce7; color: #166534; padding: 8px 14px; 
-    border-radius: 8px; font-size: 0.85rem; font-weight: 700; 
-    cursor: pointer; border: 1px solid #bbf7d0; 
-    display: flex; align-items: center; gap: 5px;
-  }
-  .receber-btn:hover { background: #166534; color: white; border-color: #166534; }
+  .receber-card:hover { transform: translateX(5px); }
+  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; }
+  .receber-pedido { font-size: 0.85rem; font-family: 'Share Tech Mono', monospace; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .receber-btn { background: #dcfce7; color: #166534; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; border: 1px solid #bbf7d0; }
+  .receber-btn:hover { background: var(--success); color: white; }
 
-  /* CUPOM & MODAL */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
-  
-  .cupom-box {
-    width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
-  .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
-  .cupom-divisoria { border-bottom: 1px dashed #000; margin: 5px 0; }
-  .cupom-lista { display: flex; flex-direction: column; gap: 5px; }
-  .cupom-item { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dotted #ccc; padding-bottom: 5px; }
-  .c-info { flex: 1; padding-right: 10px; }
-  .c-nome { font-weight: bold; display: block; text-transform: uppercase; word-break: break-word; overflow-wrap: break-word; }
-  .c-qtd { display: block; font-size: 11px; color: #444; margin-top: 2px; }
-  .c-valor { font-weight: bold; white-space: nowrap; text-align: right; }
+  /* MODAL & CUPOM (CUPOM SEMPRE CLARO) */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+  .cupom-box { width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000 !important; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .cupom-box * { color: #000 !important; }
+  .cupom-item { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dotted #ccc; padding-bottom: 5px; margin-bottom: 5px; }
   .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
   
-  @media print {
-    body * { visibility: hidden; }
-    #modalCupom, #areaCupom, #areaCupom * { visibility: visible; }
-    #modalCupom { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: white; padding: 0; }
-    #areaCupom { width: 100%; max-width: 100%; border: none; box-shadow: none; margin: 0; }
-    .no-print { display: none !important; }
-    @page { margin: 0; }
-  }
-
-  /* MOBILE */
   @media (max-width: 768px) {
     body { flex-direction: column; }
-    .sidebar { 
-      position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; 
-      flex-direction: row; justify-content: space-between; padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.95); border-radius: 20px 20px 0 0; z-index: 9999;
-    }
+    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; flex-direction: row; justify-content: space-between; padding: 10px 20px; background: var(--sidebar-bg); border-radius: 20px 20px 0 0; z-index: 9999; }
     .logo { display: none; }
-    .menu-btn { flex: 1; flex-direction: column; justify-content: center; font-size: 0.75rem; padding: 0; background: none !important; color: #94a3b8; box-shadow: none !important; gap: 5px; }
-    .menu-btn.active { color: #8b5cf6; }
-    .menu-btn i { font-size: 1.5rem; width: auto; }
-    .menu-btn span { display: block; }
-    .main-content { padding: 20px; padding-bottom: 100px; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 20px; }
+    .menu-btn { flex: 1; flex-direction: column; justify-content: center; font-size: 0.75rem; padding: 0; gap: 5px; }
+    .main-content { padding: 15px; padding-bottom: 100px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
   }
 </style>
 </head>
 <body>
 
   <nav class="sidebar">
-    <div class="logo"><i class="fas fa-gem"></i> <span>RE Solution</span></div>
+    <div class="logo">
+      <span><i class="fas fa-gem"></i> RE Solution</span>
+      <i class="fas fa-moon dark-toggle" id="themeBtn" onclick="toggleTheme()"></i>
+    </div>
     <button class="menu-btn active" onclick="navegar('dashboard', this)"><i class="fas fa-home"></i> <span>Início</span></button>
     <button class="menu-btn" onclick="navegar('areceber', this)"><i class="fas fa-hand-holding-usd"></i> <span>A Receber</span></button>
     <button class="menu-btn" onclick="navegar('vendas', this)"><i class="fas fa-shopping-bag"></i> <span>Venda</span></button>
@@ -178,15 +163,15 @@
     <div id="dashboard" class="page active">
       <h2>Visão Geral</h2>
       <div class="grid-3">
-        <div class="card" style="border-left: 4px solid var(--success);"><label>Recebido</label><div class="dash-value" id="dashReceita" style="color:var(--success)">R$ 0,00</div></div>
-        <div class="card" style="border-left: 4px solid var(--warning);"><label>A Receber</label><div class="dash-value" id="dashPendente" style="color:var(--warning)">R$ 0,00</div></div>
-        <div class="card" style="border-left: 4px solid #6366f1;"><label>Total Vendas</label><div class="dash-value" id="dashTotal" style="color:#6366f1">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid var(--success);"><label>Recebido</label><div class="dash-value" id="dashReceita">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid var(--warning);"><label>A Receber</label><div class="dash-value" id="dashPendente">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid #6366f1;"><label>Total Vendas</label><div class="dash-value" id="dashTotal">R$ 0,00</div></div>
       </div>
 
-      <div class="card" style="margin-top:25px;">
+      <div class="card">
         <h3 style="margin-top:0;">📜 Últimas Vendas</h3>
         <div class="table-responsive">
-          <table style="min-width:100%;">
+          <table>
             <thead><tr><th>Pedido</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead>
             <tbody id="tbHistorico"></tbody>
           </table>
@@ -205,40 +190,38 @@
         <div class="card">
           <label>Produto</label>
           <div class="grid-2" style="gap:15px; margin-bottom:0;">
-            <select id="selProduto" style="margin-bottom:0;"><option>Carregando...</option></select>
-            <input type="number" id="qtdItem" value="1" min="1" style="margin-bottom:0;">
+            <select id="selProduto"><option>Carregando...</option></select>
+            <input type="number" id="qtdItem" value="1" min="1">
           </div>
-          <button class="btn-add" onclick="addCarrinho()" style="margin-top:20px;">Adicionar Item</button>
+          <button class="btn-primary" onclick="addCarrinho()" style="background: #f59e0b;">Adicionar</button>
         </div>
         <div class="card">
           <h3 style="margin-top:0;">Carrinho</h3>
-          <div class="table-responsive"><table style="min-width:100%;"><thead><tr><th>Item</th><th>Qtd</th><th>Sub</th></tr></thead><tbody id="tbCarrinho"></tbody></table></div>
+          <div class="table-responsive"><table><thead><tr><th>Item</th><th>Qtd</th><th>Sub</th></tr></thead><tbody id="tbCarrinho"></tbody></table></div>
           <div style="text-align:right; font-size:1.5rem; font-weight:700; margin-top:20px; color:#6366f1;">Total: <span id="totalCarrinho">R$ 0,00</span></div>
         </div>
       </div>
       <div class="card" id="cardFinalizar" style="display:none; border:2px solid #6366f1;">
-        <h3 style="margin-top:0; color:#6366f1;">Pagamento</h3>
         <div class="grid-2">
           <div><label>Cliente</label><select id="selCliente"><option>Selecione...</option></select></div>
-          <div><label>Tipo</label><select id="tipoPagamento" onchange="toggleCrediario()"><option value="dinheiro">💵 Dinheiro</option><option value="pix">💠 Pix</option><option value="debito">💳 Débito</option><option value="crediario">📅 Crediário</option></select></div>
+          <div><label>Pagamento</label><select id="tipoPagamento" onchange="toggleCrediario()"><option value="dinheiro">💵 Dinheiro</option><option value="pix">💠 Pix</option><option value="debito">💳 Débito</option><option value="crediario">📅 Crediário</option></select></div>
         </div>
         <div id="areaCrediario" style="display:none; background:rgba(99, 102, 241, 0.05); padding:20px; border-radius:12px; margin-bottom:20px;">
-          <h4 style="margin:0 0 15px 0;">Parcelamento</h4>
           <div class="grid-2">
-            <div><label>Qtd</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></div>
+            <div><label>Parcelas</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option></select></div>
             <div><label>1ª Parcela</label><input type="date" id="dataPrimeira"></div>
           </div>
         </div>
-        <button class="btn-primary" onclick="finalizarVenda()" style="font-size:1.1rem; padding:18px;">FINALIZAR VENDA</button>
+        <button class="btn-primary" onclick="finalizarVenda()">FINALIZAR VENDA</button>
       </div>
     </div>
 
     <div id="clientes" class="page">
       <h2>Clientes</h2>
       <div class="card">
-        <div class="grid-2"><div><label>Nome</label><input id="nomeCli" placeholder="Nome Completo"></div><div><label>WhatsApp</label><input id="telCli" placeholder="5511999999999"></div></div>
-        <div class="grid-2"><div><label>Email</label><input id="emailCli" placeholder="Email"></div><div><label>Endereço</label><input id="endCli" placeholder="Endereço"></div></div>
-        <button class="btn-primary" onclick="addCliente()">Salvar Cliente</button>
+        <div class="grid-2"><div><label>Nome</label><input id="nomeCli"></div><div><label>WhatsApp</label><input id="telCli"></div></div>
+        <div class="grid-2"><div><label>Email</label><input id="emailCli"></div><div><label>Endereço</label><input id="endCli"></div></div>
+        <button class="btn-primary" onclick="addCliente()">Salvar</button>
       </div>
       <div class="card table-responsive"><table><thead><tr><th>Nome</th><th>Tel</th><th>Email</th><th>Ação</th></tr></thead><tbody id="tbClientes"></tbody></table></div>
     </div>
@@ -246,8 +229,8 @@
     <div id="produtos" class="page">
       <h2>Estoque</h2>
       <div class="card">
-        <div class="grid-3"><div><label>Produto</label><input id="nomeProd" placeholder="Nome"></div><div><label>Preço</label><input id="precoProd" type="number"></div><div><label>Qtd</label><input id="qtdProd" type="number"></div></div>
-        <button class="btn-primary" onclick="addProduto()">Salvar Produto</button>
+        <div class="grid-3"><div><label>Produto</label><input id="nomeProd"></div><div><label>Preço</label><input id="precoProd" type="number"></div><div><label>Qtd</label><input id="qtdProd" type="number"></div></div>
+        <button class="btn-primary" onclick="addProduto()">Salvar</button>
       </div>
       <div class="card table-responsive"><table><thead><tr><th>Produto</th><th>R$</th><th>Qtd</th><th>Ação</th></tr></thead><tbody id="tbProdutos"></tbody></table></div>
     </div>
@@ -258,144 +241,118 @@
       <div id="areaCupom" class="cupom-box">
         <div class="cupom-header">
           <div style="font-size:16px; font-weight:bold;">RE SOLUTION</div>
-          <div>Comprovante de Venda</div>
-          <div>Pedido <span id="cupomId"></span></div>
+          <div id="cupomId"></div>
           <div id="cupomData"></div>
         </div>
         <div style="margin-bottom:5px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div>
         <div class="cupom-divisoria"></div>
-        <div id="cupomLista" class="cupom-lista"></div>
-        <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal">R$ 0,00</span></div>
+        <div id="cupomLista"></div>
+        <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal"></span></div>
         <div style="font-size:11px">Pagamento: <span id="cupomPagto"></span></div>
         <div id="cupomParcelas" style="font-size:11px; margin-top:5px; display:none;"></div>
-        <div style="text-align:center; margin-top:15px; font-size:10px;">Obrigado pela preferência!</div>
       </div>
       <div class="no-print" style="margin-top:15px; display:flex; flex-direction:column; gap:10px; width:300px;">
         <button class="btn-share" onclick="compartilharImagem()"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        <button class="btn-whatsapp" onclick="compartilharZap()"><i class="fab fa-whatsapp"></i> Enviar Texto</button>
         <button class="btn-primary" style="background:#333;" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
-        <button class="btn-add" style="background:#ef4444;" onclick="fecharCupom()"><i class="fas fa-times"></i> Fechar</button>
+        <button class="btn-add" style="background:#ef4444;" onclick="fecharCupom()">Fechar</button>
       </div>
     </div>
   </div>
 
 <script>
 const db = { get: k => JSON.parse(localStorage.getItem(k))||[], set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) };
-let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [], dataAtual = new Date();
-let vendaAtual = null; 
+let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [];
 
-window.onload = () => { if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); atualizarTudo(); };
-function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
-function navegar(id, btn) { 
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); 
-  document.getElementById(id).classList.add('active'); if(btn) btn.classList.add('active'); 
-  if(id === 'areceber') renderAReceber();
+window.onload = () => { 
+  if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); 
+  if(localStorage.getItem('theme') === 'dark') toggleTheme(true);
+  atualizarTudo(); 
+};
+
+function toggleTheme(init = false) {
+  const body = document.body;
+  const btn = document.getElementById('themeBtn');
+  if(!init) {
+    body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', body.dataset.theme);
+  } else {
+    body.dataset.theme = 'dark';
+  }
+  btn.className = body.dataset.theme === 'dark' ? 'fas fa-sun dark-toggle' : 'fas fa-moon dark-toggle';
 }
 
-function addCarrinho() { const i=document.getElementById("selProduto").value, q=parseInt(document.getElementById("qtdItem").value); if(!i||q<1) return alert("Erro"); const p=produtos[i]; carrinho.push({idOrigem:i, nome:p.nome, preco:p.preco, qtd:q, sub:p.preco*q}); renderCarrinho(); }
+function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
+function navegar(id, btn) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); if(id === 'areceber') renderAReceber(); }
+
+function addCarrinho() { const i=document.getElementById("selProduto").value, q=parseInt(document.getElementById("qtdItem").value); if(!i||q<1) return; const p=produtos[i]; carrinho.push({idOrigem:i, nome:p.nome, preco:p.preco, qtd:q, sub:p.preco*q}); renderCarrinho(); }
 function renderCarrinho() { const tb=document.getElementById("tbCarrinho"); tb.innerHTML=""; let t=0; carrinho.forEach(c=>{t+=c.sub; tb.innerHTML+=`<tr><td>${c.nome}</td><td>${c.qtd}</td><td>${formatMoney(c.sub)}</td></tr>`}); document.getElementById("totalCarrinho").innerText=formatMoney(t); document.getElementById("cardFinalizar").style.display=t>0?'block':'none'; }
 function toggleCrediario() { document.getElementById("areaCrediario").style.display=document.getElementById("tipoPagamento").value==='crediario'?'block':'none'; }
 
 function finalizarVenda() {
-  const cliIdx=document.getElementById("selCliente").value; if(!cliIdx) return alert("Cliente?");
+  const cliIdx=document.getElementById("selCliente").value; if(!cliIdx) return alert("Selecione Cliente");
   const total=carrinho.reduce((a,b)=>a+b.sub,0), tipo=document.getElementById("tipoPagamento").value;
   let parcelas=[];
   if(tipo==='crediario') {
-    const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db=new Date(dt+'T12:00:00');
-    for(let i=0;i<qtd;i++) { let d=new Date(db); d.setDate(d.getDate()+(i*30)); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); }
+    const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db_date=new Date(dt+'T12:00:00');
+    for(let i=0;i<qtd;i++) { let d=new Date(db_date); d.setMonth(d.getMonth()+i); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); }
   }
   carrinho.forEach(x=>produtos[x.idOrigem].qtd-=x.qtd); db.set("produtos",produtos);
-  const clienteData = clientes[cliIdx];
-  const idVenda = '#' + Date.now().toString().slice(-4);
-  const novaVenda = {id:Date.now(), idVisivel: idVenda, cliente:clienteData.nome, tel:clienteData.tel, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
-  vendas.unshift(novaVenda); db.set("vendas",vendas);
-  vendaAtual = novaVenda; gerarCupom(novaVenda); carrinho=[]; renderCarrinho(); atualizarTudo();
+  const idV = '#' + Date.now().toString().slice(-4);
+  const v = {id:Date.now(), idVisivel: idV, cliente:clientes[cliIdx].nome, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
+  vendas.unshift(v); db.set("vendas",vendas); gerarCupom(v); carrinho=[]; renderCarrinho(); atualizarTudo();
 }
 
 function gerarCupom(v) {
-  vendaAtual = v;
-  document.getElementById("cupomId").innerText = v.idVisivel || ('#'+v.id.toString().slice(-4));
-  document.getElementById("cupomData").innerText = v.dataVenda;
-  document.getElementById("cupomCliente").innerText = v.cliente;
-  document.getElementById("cupomTotal").innerText = formatMoney(v.total);
+  document.getElementById("cupomId").innerText = "PEDIDO " + v.idVisivel; document.getElementById("cupomData").innerText = v.dataVenda;
+  document.getElementById("cupomCliente").innerText = v.cliente; document.getElementById("cupomTotal").innerText = formatMoney(v.total);
   document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
   const lista = document.getElementById("cupomLista"); lista.innerHTML = "";
-  v.itens.forEach(i => { lista.innerHTML += `<div class="cupom-item"><div class="c-info"><span class="c-nome">${i.nome}</span><span class="c-qtd">${i.qtd} x ${formatMoney(i.preco)}</span></div><div class="c-valor">${formatMoney(i.sub)}</div></div>`; });
+  v.itens.forEach(i => { lista.innerHTML += `<div class="cupom-item"><div class="c-info"><span class="c-nome">${i.nome}</span><span>${i.qtd} x ${formatMoney(i.preco)}</span></div><div class="c-valor"><b>${formatMoney(i.sub)}</b></div></div>`; });
   const divP = document.getElementById("cupomParcelas");
   if(v.tipo === 'crediario') { divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>"; v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else divP.style.display='none';
   document.getElementById("modalCupom").style.display = "flex";
 }
 
-function compartilharImagem() {
-  const area = document.getElementById("areaCupom");
-  html2canvas(area).then(canvas => {
-    canvas.toBlob(blob => {
-      const file = new File([blob], "comprovante.png", { type: "image/png" });
-      if (navigator.share) navigator.share({ title: 'Comprovante', files: [file] }).catch(err => console.log(err));
-      else { const link = document.createElement('a'); link.download = 'comprovante.png'; link.href = canvas.toDataURL(); link.click(); }
-    });
+function renderAReceber() {
+  const container = document.getElementById("listaRecebimentos"); container.innerHTML = ""; let tem = false;
+  vendas.forEach((v, vIdx) => {
+    if(v.tipo === 'crediario') {
+      const pends = v.parcelas.map((p, pIdx) => ({...p, pIdx})).filter(p => !p.paga);
+      if(pends.length > 0) {
+        tem = true;
+        let h = ""; pends.forEach(p => h += `<div class="receber-item"><div>${p.num}ª Parc - ${p.data}<br><b>${formatMoney(p.valor)}</b></div><button class="receber-btn" onclick="baixarParc(${vIdx}, ${p.pIdx})">PAGO</button></div>`);
+        const c = document.createElement('div'); c.className = "receber-card";
+        c.innerHTML = `<div class="receber-header"><b>${v.cliente}</b><span class="receber-pedido">${v.idVisivel}</span></div><div>${h}</div>`;
+        container.appendChild(c);
+      }
+    }
   });
+  if(!tem) container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-light);">Nada pendente!</div>';
 }
-function compartilharZap() {
-  if(!vendaAtual) return;
-  let id = vendaAtual.idVisivel || '#'+vendaAtual.id.toString().slice(-4);
-  let texto = `🧾 *PEDIDO ${id}*\nCliente: ${vendaAtual.cliente}\nData: ${vendaAtual.dataVenda}\n----------------\n`;
-  vendaAtual.itens.forEach(i => { texto += `${i.qtd}x ${i.nome}\nValor: ${formatMoney(i.sub)}\n`; });
-  texto += `----------------\n*TOTAL: ${formatMoney(vendaAtual.total)}*\nPgto: ${vendaAtual.tipo.toUpperCase()}`;
-  const link = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(link, '_blank');
-}
-function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; alert("Venda Realizada!"); navegar('areceber'); }
+
+function baixarParc(vI, pI) { if(confirm("Confirmar?")) { vendas[vI].parcelas[pI].paga = true; db.set("vendas", vendas); renderAReceber(); atualizarDashboard(); } }
+function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; navegar('dashboard', document.querySelector('.menu-btn')); }
+function compartilharImagem() { html2canvas(document.getElementById("areaCupom")).then(canvas => { canvas.toBlob(blob => { const file = new File([blob], "cupom.png", { type: "image/png" }); if (navigator.share) navigator.share({ title: 'Cupom', files: [file] }); }); }); }
+function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value, e=document.getElementById("emailCli").value, en=document.getElementById("endCli").value; if(n){clientes.push({nome:n, tel:t, email:e, end:en}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value="";} }
+function addProduto() { const n=document.getElementById("nomeProd").value, p=document.getElementById("precoProd").value, q=document.getElementById("qtdProd").value; if(n){produtos.push({nome:n, preco:p, qtd:q}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo"); document.getElementById("nomeProd").value="";} }
+function deletar(t,i) { if(confirm("Apagar?")){ if(t==='c') clientes.splice(i,1); else produtos.splice(i,1); db.set("clientes",clientes); db.set("produtos",produtos); atualizarTudo();} }
+function deletarVenda(idx) { if(confirm("Excluir?")){ vendas.splice(idx,1); db.set("vendas",vendas); atualizarTudo(); } }
+function reimprimirVenda(idx) { gerarCupom(vendas[idx]); }
 
 function atualizarDashboard() { 
   let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) }); 
   document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t); 
   const tbHist = document.getElementById("tbHistorico"); tbHist.innerHTML="";
   vendas.slice(0, 10).forEach((v, i) => {
-    const id = v.idVisivel || '#'+v.id.toString().slice(-4);
-    tbHist.innerHTML += `<tr><td style="font-family:monospace;font-weight:bold">${id}</td><td>${v.cliente}</td><td>${formatMoney(v.total)}</td><td><div class="btn-group-action"><button class="btn-icon btn-print-mini" onclick="reimprimirVenda(${i})"><i class="fas fa-print"></i></button><button class="btn-icon btn-trash-mini" onclick="deletarVenda(${i})"><i class="fas fa-trash"></i></button></div></td></tr>`;
+    tbHist.innerHTML += `<tr><td style="text-align:center;font-weight:bold">${v.idVisivel}</td><td>${v.cliente}</td><td style="text-align:center">${formatMoney(v.total)}</td><td><div class="btn-group-action"><button class="btn-icon btn-print-mini" onclick="reimprimirVenda(${i})"><i class="fas fa-print"></i></button><button class="btn-icon btn-trash-mini" onclick="deletarVenda(${i})"><i class="fas fa-trash"></i></button></div></td></tr>`;
   });
 }
-
-function renderAReceber() {
-  const container = document.getElementById("listaRecebimentos"); container.innerHTML = ""; let temPendencia = false;
-  vendas.forEach((v, vIndex) => {
-    if(v.tipo === 'crediario') {
-      const parcelasPendentes = v.parcelas.map((p, pIndex) => ({...p, pIndex})).filter(p => !p.paga);
-      if(parcelasPendentes.length > 0) {
-        temPendencia = true; const idPed = v.idVisivel || '#'+v.id.toString().slice(-4);
-        let htmlParcelas = "";
-        parcelasPendentes.forEach(p => {
-           htmlParcelas += `<div class="receber-item"><div class="receber-info"><span style="font-weight:600">${p.num}ª Parc</span> - ${p.data}<br><span style="color:#666">${formatMoney(p.valor)}</span></div><button class="receber-btn" onclick="baixarParcela(${vIndex}, ${p.pIndex})">RECEBER <i class="fas fa-check"></i></button></div>`;
-        });
-        const card = document.createElement('div'); card.className = "receber-card";
-        card.innerHTML = `<div class="receber-header"><div class="receber-cliente"><i class="fas fa-user-circle"></i> ${v.cliente}</div><div class="receber-pedido">PEDIDO ${idPed}</div></div><div>${htmlParcelas}</div>`;
-        container.appendChild(card);
-      }
-    }
-  });
-  if(!temPendencia) container.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-style:italic;">Nenhuma conta pendente! 🎉</div>';
-}
-
-function baixarParcela(vIndex, pIndex) {
-  if(confirm("Confirmar recebimento?")) {
-    vendas[vIndex].parcelas[pIndex].paga = true; db.set("vendas", vendas);
-    renderAReceber(); atualizarDashboard();
-  }
-}
-
-function reimprimirVenda(idx) { gerarCupom(vendas[idx]); }
-function deletarVenda(idx) { if(confirm("Excluir venda?")){ vendas.splice(idx,1); db.set("vendas",vendas); atualizarTudo(); } }
-function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value, e=document.getElementById("emailCli").value, end=document.getElementById("endCli").value; if(n){clientes.push({nome:n, tel:t, email:e, end:end}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value=""; document.getElementById("emailCli").value="";} }
-function addProduto() { const n=document.getElementById("nomeProd").value, p=document.getElementById("precoProd").value, q=document.getElementById("qtdProd").value; if(n){produtos.push({nome:n, preco:p, qtd:q}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo"); document.getElementById("nomeProd").value="";} }
-function deletar(t,i) { if(confirm("Apagar?")){ if(t==='c') clientes.splice(i,1); else produtos.splice(i,1); db.set("clientes",clientes); db.set("produtos",produtos); atualizarTudo();} }
 function atualizarTudo() { 
   atualizarDashboard(); 
   const sc=document.getElementById("selCliente"); sc.innerHTML="<option value=''>Cliente...</option>"; clientes.forEach((c,i)=>sc.innerHTML+=`<option value="${i}">${c.nome}</option>`); 
   const sp=document.getElementById("selProduto"); sp.innerHTML="<option value=''>Produto...</option>"; produtos.forEach((p,i)=>sp.innerHTML+=`<option value="${i}">${p.nome}</option>`); 
-  const tc=document.getElementById("tbClientes"); tc.innerHTML=""; clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td>${c.tel}</td><td style="font-size:0.8rem">${c.email||'-'}</td><td><button onclick="deletar('c',${i})">X</button></td></tr>`); 
-  const tp=document.getElementById("tbProdutos"); tp.innerHTML=""; produtos.forEach((p,i)=>tp.innerHTML+=`<tr><td>${p.nome}</td><td>${formatMoney(p.preco)}</td><td>${p.qtd}</td><td><button onclick="deletar('p',${i})">X</button></td></tr>`); 
+  const tc=document.getElementById("tbClientes"); tc.innerHTML=""; clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td style="text-align:center">${c.tel}</td><td>${c.email||'-'}</td><td style="text-align:center"><button onclick="deletar('c',${i})">X</button></td></tr>`); 
+  const tp=document.getElementById("tbProdutos"); tp.innerHTML=""; produtos.forEach((p,i)=>tp.innerHTML+=`<tr><td>${p.nome}</td><td style="text-align:center">${formatMoney(p.preco)}</td><td style="text-align:center">${p.qtd}</td><td style="text-align:center"><button onclick="deletar('p',${i})">X</button></td></tr>`); 
 }
 </script>
 </body>
