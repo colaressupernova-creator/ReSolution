@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RE Solution - Cobrança V18</title>
+<title>RE Solution - Cobrança Cliente V19</title>
 
 <meta name="theme-color" content="#6366f1">
 <link rel="manifest" href="manifest.json">
@@ -83,36 +83,41 @@
   button { padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: 0.3s; }
   .btn-primary { background: var(--primary-gradient); color: white; width: 100%; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
   .btn-add { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; width: 100%; }
-  .btn-danger { background: var(--danger); color: white; padding: 8px 15px; font-size: 0.8rem; }
-  
   .dash-value { font-size: 1.8rem; font-weight: 700; background: linear-gradient(to right, #333, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-  /* ESTILOS DA NOVA LISTA DE COBRANÇA */
-  .cobranca-section { margin-bottom: 25px; }
-  .cobranca-title { font-size: 1rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .tag-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
-  
-  .rec-card {
-    background: rgba(255,255,255,0.8); border-radius: 16px; padding: 15px; margin-bottom: 10px;
+  /* --- NOVA UI DE COBRANÇA --- */
+  .tabs-header { display: flex; gap: 10px; margin-bottom: 20px; }
+  .tab-link { 
+    flex: 1; padding: 10px; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 12px; cursor: pointer; text-align: center; font-weight: 600; color: var(--text-light); transition: 0.3s;
+  }
+  .tab-link.active { background: white; color: #6366f1; border-color: #6366f1; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2); }
+
+  .client-card {
+    background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px;
     display: flex; justify-content: space-between; align-items: center;
-    border-left: 5px solid #ccc; transition: 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s;
+    border-left: 5px solid #6366f1;
   }
-  .rec-card:active { transform: scale(0.98); }
+  .client-card:hover { transform: translateY(-3px); }
+  .client-card.has-late { border-left-color: var(--danger); } /* Se tiver atraso */
   
-  .rec-atrasado { border-left-color: var(--danger); background: #fff5f5; }
-  .rec-hoje { border-left-color: var(--warning); background: #fffbeb; }
-  .rec-futuro { border-left-color: #3b82f6; }
-  
-  .rec-info h4 { margin: 0; font-size: 1rem; color: var(--text-dark); }
-  .rec-info p { margin: 2px 0 0 0; font-size: 0.85rem; color: var(--text-light); }
-  .rec-valor { font-weight: 700; font-size: 1.1rem; text-align: right; }
-  
-  .btn-receber-mini {
-    background: var(--success); color: white; border: none; padding: 8px 16px; 
-    border-radius: 8px; font-size: 0.8rem; cursor: pointer; margin-left: 10px;
-    box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+  .client-info h3 { margin: 0; font-size: 1.1rem; color: var(--text-dark); }
+  .client-info span { font-size: 0.85rem; color: var(--text-light); }
+  .client-debt { text-align: right; }
+  .debt-value { font-size: 1.2rem; font-weight: 700; color: var(--danger); display: block; }
+  .debt-label { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; }
+
+  /* Modal de Detalhes */
+  .detail-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.6); padding: 12px; border-radius: 10px; margin-bottom: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
   }
+  .detail-date { font-weight: 600; color: var(--text-dark); }
+  .detail-status { font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; }
+  .status-aberto { background: #fee2e2; color: #991b1b; }
+  .status-pago { background: #dcfce7; color: #166534; }
 
   /* MODAL */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
@@ -121,7 +126,6 @@
   .cupom-divisoria { border-bottom: 1px dashed #000; margin: 5px 0; }
   .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
   
-  /* TABLE */
   .table-responsive { overflow-x: auto; border-radius: 12px; }
   table { width: 100%; border-collapse: collapse; min-width: 600px; }
   th { background: rgba(99, 102, 241, 0.1); color: #6366f1; padding: 15px; text-align: left; }
@@ -146,6 +150,9 @@
     .menu-btn span { display: block; }
     .main-content { padding: 15px; padding-bottom: 90px; }
     .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 15px; }
+    
+    .client-card { padding: 15px; }
+    .debt-value { font-size: 1rem; }
   }
 </style>
 </head>
@@ -172,29 +179,25 @@
     </div>
 
     <div id="recebimentos" class="page">
-      <h2>Central de Recebimentos</h2>
+      <h2>Central de Cobrança</h2>
       
-      <div id="secAtrasados" class="cobranca-section" style="display:none;">
-        <div class="cobranca-title" style="color:var(--danger)">
-          <i class="fas fa-exclamation-circle"></i> Atrasados <span id="countAtrasados" class="tag-count">0</span>
-        </div>
-        <div id="listaAtrasados"></div>
+      <div class="tabs-header">
+        <div class="tab-link active" id="tabAberto" onclick="mudarAbaRecebimento('aberto')">Em Aberto</div>
+        <div class="tab-link" id="tabFinalizado" onclick="mudarAbaRecebimento('finalizado')">Finalizados</div>
       </div>
 
-      <div id="secHoje" class="cobranca-section">
-        <div class="cobranca-title" style="color:var(--warning)">
-          <i class="fas fa-calendar-day"></i> Vence Hoje <span id="countHoje" class="tag-count">0</span>
+      <div id="viewAberto">
+        <div id="listaDevedores"></div>
+        <div id="msgSemDividas" style="text-align:center; padding:30px; color:#999; display:none;">
+          <i class="fas fa-check-circle" style="font-size:3rem; margin-bottom:10px; color:#d1fae5;"></i><br>Nenhum pagamento pendente!
         </div>
-        <div id="listaHoje"></div>
-        <div id="msgSemHoje" style="text-align:center; color:#999; padding:20px; display:none;">Nada vencendo hoje!</div>
       </div>
 
-      <div id="secFuturos" class="cobranca-section">
-        <div class="cobranca-title" style="color:#3b82f6">
-          <i class="fas fa-clock"></i> Próximos 7 Dias <span id="countFuturos" class="tag-count">0</span>
-        </div>
-        <div id="listaFuturos"></div>
+      <div id="viewFinalizado" style="display:none;">
+        <div id="listaFinalizados"></div>
+        <div id="msgSemFinalizados" style="text-align:center; padding:30px; color:#999; display:none;">Histórico vazio.</div>
       </div>
+
     </div>
 
     <div id="historico" class="page">
@@ -239,16 +242,22 @@
       </div>
       <div class="card table-responsive"><table><thead><tr><th>Nome</th><th>Tel</th><th>Ação</th></tr></thead><tbody id="tbClientes"></tbody></table></div>
     </div>
-
-    <div id="produtos" class="page">
-      <h2>Estoque</h2>
-      <div class="card">
-        <div class="grid-3"><div><label>Produto</label><input id="nomeProd" placeholder="Nome"></div><div><label>Preço</label><input id="precoProd" type="number"></div><div><label>Qtd</label><input id="qtdProd" type="number"></div></div>
-        <button class="btn-primary" onclick="addProduto()">Salvar</button>
-      </div>
-      <div class="card table-responsive"><table><thead><tr><th>Produto</th><th>R$</th><th>Qtd</th><th>Ação</th></tr></thead><tbody id="tbProdutos"></tbody></table></div>
-    </div>
   </main>
+
+  <div id="modalDetalhes" class="modal-overlay">
+    <div class="card" style="width: 90%; max-width: 450px; background: #fff; max-height: 90vh; display: flex; flex-direction: column;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 id="detalheNome" style="margin:0; font-size:1.2rem; color:#6366f1;">Cliente</h3>
+        <button onclick="document.getElementById('modalDetalhes').style.display='none'" style="background:none; border:none; font-size:1.5rem; color:#666;">&times;</button>
+      </div>
+      <div style="background:#f3f4f6; padding:15px; border-radius:12px; margin-bottom:15px;">
+        <span style="font-size:0.8rem; color:#666;">Total em Aberto</span>
+        <div id="detalheTotal" style="font-size:1.8rem; font-weight:700; color:#ef4444;">R$ 0,00</div>
+      </div>
+      <div id="listaParcelasCliente" style="overflow-y:auto; flex:1;">
+        </div>
+    </div>
+  </div>
 
   <div id="modalCupom" class="modal-overlay">
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
@@ -285,67 +294,140 @@ function navegar(id, btn) {
   if(id === 'historico') renderHistorico();
 }
 
-// --- LOGICA FINANCEIRA OTIMIZADA ---
-function renderRecebimentos() {
-  const atrEl = document.getElementById('listaAtrasados'), hojeEl = document.getElementById('listaHoje'), futEl = document.getElementById('listaFuturos');
-  atrEl.innerHTML = ''; hojeEl.innerHTML = ''; futEl.innerHTML = '';
-  
-  let cAtr = 0, cHoje = 0, cFut = 0;
-  const hojeStr = new Date().toLocaleDateString('pt-BR'); // DD/MM/AAAA
-  
-  // Função auxiliar para converter "DD/MM/AAAA" em Date object para comparação
-  const strToDate = (s) => { const p=s.split('/'); return new Date(p[2], p[1]-1, p[0]); };
-  const dataHoje = new Date(); dataHoje.setHours(0,0,0,0);
+// --- LOGICA FINANCEIRA POR CLIENTE ---
+function mudarAbaRecebimento(aba) {
+  document.getElementById('tabAberto').classList.toggle('active', aba === 'aberto');
+  document.getElementById('tabFinalizado').classList.toggle('active', aba === 'finalizado');
+  document.getElementById('viewAberto').style.display = aba === 'aberto' ? 'block' : 'none';
+  document.getElementById('viewFinalizado').style.display = aba === 'finalizado' ? 'block' : 'none';
+  renderRecebimentos();
+}
 
-  // Coleta todas parcelas pendentes
-  let parcelasGeral = [];
-  vendas.forEach((v, vIndex) => {
+function renderRecebimentos() {
+  const listaDev = document.getElementById('listaDevedores');
+  const listaFin = document.getElementById('listaFinalizados');
+  listaDev.innerHTML = ''; listaFin.innerHTML = '';
+  
+  // Agrupa dívidas por cliente
+  let devedores = {};
+  let finalizados = [];
+
+  vendas.forEach(v => {
     if(v.tipo === 'crediario' && v.parcelas) {
+      let totalPendente = 0;
+      let qtdPendente = 0;
+      let todasPagas = true;
+
+      v.parcelas.forEach(p => {
+        if(!p.paga) { totalPendente += p.valor; qtdPendente++; todasPagas = false; }
+      });
+
+      if(!todasPagas) {
+        if(!devedores[v.cliente]) devedores[v.cliente] = { nome: v.cliente, total: 0, parcelasRestantes: 0 };
+        devedores[v.cliente].total += totalPendente;
+        devedores[v.cliente].parcelasRestantes += qtdPendente;
+      } else {
+        // Se todas as parcelas dessa venda estão pagas, vai pra finalizados
+        finalizados.push(v);
+      }
+    }
+  });
+
+  // Renderiza Devedores (Em Aberto)
+  const nomesDevedores = Object.keys(devedores).sort();
+  if(nomesDevedores.length === 0) {
+    document.getElementById('msgSemDividas').style.display = 'block';
+  } else {
+    document.getElementById('msgSemDividas').style.display = 'none';
+    nomesDevedores.forEach(nome => {
+      const d = devedores[nome];
+      listaDev.innerHTML += `
+        <div class="client-card" onclick="abrirDetalhesCliente('${nome}')">
+          <div class="client-info">
+            <h3>${d.nome}</h3>
+            <span>${d.parcelasRestantes} pagamentos pendentes</span>
+          </div>
+          <div class="client-debt">
+            <span class="debt-value">${formatMoney(d.total)}</span>
+            <span class="debt-label">Em Aberto</span>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // Renderiza Finalizados
+  if(finalizados.length === 0) {
+    document.getElementById('msgSemFinalizados').style.display = 'block';
+  } else {
+    document.getElementById('msgSemFinalizados').style.display = 'none';
+    finalizados.forEach(v => {
+      listaFin.innerHTML += `
+        <div class="client-card" style="border-left-color:var(--success); opacity:0.8;">
+          <div class="client-info">
+            <h3>${v.cliente}</h3>
+            <span style="color:var(--success)">Totalmente Quitado</span>
+          </div>
+          <div class="client-debt">
+            <span class="debt-value" style="color:var(--success)">${formatMoney(v.total)}</span>
+            <span class="debt-label">${v.dataVenda.split(' ')[0]}</span>
+          </div>
+        </div>
+      `;
+    });
+  }
+}
+
+// Abre o Modal com as parcelas do cliente selecionado
+function abrirDetalhesCliente(nomeCliente) {
+  const lista = document.getElementById('listaParcelasCliente');
+  lista.innerHTML = '';
+  let totalDev = 0;
+  
+  vendas.forEach((v, vIndex) => {
+    if(v.tipo === 'crediario' && v.parcelas && v.cliente === nomeCliente) {
       v.parcelas.forEach((p, pIndex) => {
         if(!p.paga) {
-          parcelasGeral.push({ ...p, cliente: v.cliente, vIndex, pIndex, dateObj: strToDate(p.data) });
+          totalDev += p.valor;
+          const dataVenc = p.data;
+          
+          lista.innerHTML += `
+            <div class="detail-row">
+              <div>
+                <div class="detail-date">${p.num}ª Parcela • ${dataVenc}</div>
+                <div style="font-size:0.9rem;">${formatMoney(p.valor)}</div>
+              </div>
+              <button class="btn-add" style="width:auto; padding:8px 15px; font-size:0.8rem; background:var(--success);" onclick="baixarParcela('${nomeCliente}', ${vIndex}, ${pIndex})">
+                Receber
+              </button>
+            </div>
+          `;
         }
       });
     }
   });
 
-  // Ordena por data (mais antigo primeiro)
-  parcelasGeral.sort((a,b) => a.dateObj - b.dateObj);
-
-  parcelasGeral.forEach(item => {
-    const cardHTML = `
-      <div class="rec-card ${item.dateObj < dataHoje ? 'rec-atrasado' : (item.data === hojeStr ? 'rec-hoje' : 'rec-futuro')}">
-        <div class="rec-info">
-          <h4>${item.cliente}</h4>
-          <p>${item.num}ª Parcela • ${item.data}</p>
-        </div>
-        <div style="display:flex; align-items:center;">
-          <div class="rec-valor">${formatMoney(item.valor)}</div>
-          <button class="btn-receber-mini" onclick="baixarParcela(${item.vIndex}, ${item.pIndex})"><i class="fas fa-check"></i></button>
-        </div>
-      </div>
-    `;
-
-    if (item.dateObj < dataHoje) { atrEl.innerHTML += cardHTML; cAtr++; }
-    else if (item.data === hojeStr) { hojeEl.innerHTML += cardHTML; cHoje++; }
-    else { futEl.innerHTML += cardHTML; cFut++; }
-  });
-
-  document.getElementById('countAtrasados').innerText = cAtr;
-  document.getElementById('countHoje').innerText = cHoje;
-  document.getElementById('countFuturos').innerText = cFut;
-  
-  document.getElementById('secAtrasados').style.display = cAtr > 0 ? 'block' : 'none';
-  document.getElementById('msgSemHoje').style.display = cHoje === 0 ? 'block' : 'none';
+  document.getElementById('detalheNome').innerText = nomeCliente;
+  document.getElementById('detalheTotal').innerText = formatMoney(totalDev);
+  document.getElementById('modalDetalhes').style.display = 'flex';
 }
 
-function baixarParcela(vi, pi) {
-  if(confirm("Confirmar o recebimento deste valor?")) {
-    vendas[vi].parcelas[pi].paga = true;
+function baixarParcela(nomeCliente, vIndex, pIndex) {
+  if(confirm("Confirmar recebimento?")) {
+    vendas[vIndex].parcelas[pIndex].paga = true;
     db.set("vendas", vendas);
-    renderRecebimentos();
     atualizarTudo();
-    alert("Recebido com sucesso!");
+    
+    // Recarrega o modal para ver se ainda tem dívida
+    abrirDetalhesCliente(nomeCliente);
+    renderRecebimentos();
+    
+    // Se total for 0, fecha modal
+    const totalNovo = document.getElementById('detalheTotal').innerText;
+    if(totalNovo === "R$ 0,00") {
+      alert("Dívida quitada! Movido para Finalizados.");
+      document.getElementById('modalDetalhes').style.display = 'none';
+    }
   }
 }
 
@@ -360,7 +442,7 @@ function renderHistorico() {
   });
 }
 function reimprimir(id) { const v = vendas.find(x => x.id === id); if(v) { vendaAtual=v; gerarCupom(v); } }
-function deletarVenda(id) { if(confirm("Apagar venda permanentemente?")) { vendas = vendas.filter(v => v.id !== id); db.set("vendas", vendas); renderHistorico(); atualizarTudo(); } }
+function deletarVenda(id) { if(confirm("Apagar venda permanentemente?")) { vendas = vendas.filter(v => v.id !== id); db.set("vendas", vendas); renderHistorico(); atualizarTudo(); renderRecebimentos(); } }
 
 // --- VENDAS ---
 function addCarrinho() { const i=document.getElementById("selProduto").value, q=parseInt(document.getElementById("qtdItem").value); if(!i||q<1) return alert("Erro"); const p=produtos[i]; carrinho.push({idOrigem:i, nome:p.nome, preco:p.preco, qtd:q, sub:p.preco*q}); renderCarrinho(); }
@@ -372,7 +454,7 @@ function finalizarVenda() {
   let parcelas=[]; if(tipo==='crediario') { const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db=new Date(dt+'T12:00:00'); for(let i=0;i<qtd;i++) { let d=new Date(db); d.setDate(d.getDate()+(i*30)); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); } }
   carrinho.forEach(x=>produtos[x.idOrigem].qtd-=x.qtd); db.set("produtos",produtos);
   const clienteData = clientes[cliIdx]; const novaVenda = {id:Date.now(), cliente:clienteData.nome, tel:clienteData.tel, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
-  vendas.unshift(novaVenda); db.set("vendas",vendas); vendaAtual = novaVenda; gerarCupom(novaVenda); carrinho=[]; renderCarrinho(); atualizarTudo();
+  vendas.unshift(novaVenda); db.set("vendas",vendas); vendaAtual = novaVenda; gerarCupom(novaVenda); carrinho=[]; renderCarrinho(); atualizarTudo(); renderRecebimentos();
 }
 function gerarCupom(v) {
   document.getElementById("cupomData").innerText = v.dataVenda; document.getElementById("cupomCliente").innerText = v.cliente; document.getElementById("cupomTotal").innerText = formatMoney(v.total); document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
