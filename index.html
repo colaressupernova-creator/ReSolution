@@ -16,7 +16,7 @@
 
 <style>
   :root {
-    /* MODO CLARO (Default) */
+    /* MODO CLARO (Padrão) */
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
     --body-bg: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
     --glass-bg: rgba(255, 255, 255, 0.9);
@@ -24,8 +24,10 @@
     --card-bg: #ffffff;
     --text-dark: #1e293b;
     --text-light: #64748b;
-    --table-header: rgba(99, 102, 241, 0.1);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.5);
+    --table-hover: rgba(255, 255, 255, 0.5);
+    --input-bg: rgba(255,255,255,0.6);
+    --th-bg: rgba(99, 102, 241, 0.1);
     
     --success: #10b981;
     --warning: #f59e0b;
@@ -34,13 +36,15 @@
 
   [data-theme="dark"] {
     --body-bg: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #1e1b4b);
-    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-bg: rgba(30, 41, 59, 0.85);
     --sidebar-bg: rgba(15, 23, 42, 0.95);
     --card-bg: #1e293b;
     --text-dark: #f1f5f9;
     --text-light: #94a3b8;
-    --table-header: rgba(99, 102, 241, 0.2);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --table-hover: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(0,0,0,0.3);
+    --th-bg: rgba(99, 102, 241, 0.25);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -56,13 +60,18 @@
   /* SIDEBAR */
   .sidebar { 
     width: 280px; background: var(--sidebar-bg);
-    backdrop-filter: blur(20px); border-right: var(--glass-border); display: flex; flex-direction: column; 
+    backdrop-filter: blur(20px); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; 
     padding: 25px; flex-shrink: 0; z-index: 100; transition: all 0.3s ease;
   }
-  .logo { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: space-between; }
+  
+  .logo { 
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; 
+    background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+    display: flex; align-items: center; justify-content: space-between; 
+  }
   
   .dark-toggle { cursor: pointer; color: var(--text-light); font-size: 1.2rem; transition: 0.3s; }
-  .dark-toggle:hover { color: #f59e0b; }
+  .dark-toggle:hover { color: #f59e0b; transform: rotate(15deg); }
 
   .menu-btn { 
     background: transparent; border: none; color: var(--text-light); padding: 14px 18px; 
@@ -80,10 +89,11 @@
   
   h2 { margin-top: 0; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; }
 
-  /* CARDS COM EFEITO FLUTUAR */
+  /* CARDS FLUTUANTES */
   .card { 
     background: var(--glass-bg); backdrop-filter: blur(16px);
-    border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: var(--glass-border); 
+    border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+    border: 1px solid var(--border-color); 
     margin-bottom: 25px; transition: all 0.3s ease;
   }
   .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
@@ -92,8 +102,8 @@
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
   
   input, select { 
-    width: 100%; padding: 14px; border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; 
-    font-size: 1rem; background: rgba(255,255,255,0.1); color: var(--text-dark); margin-bottom: 15px; outline: none; transition: 0.3s; 
+    width: 100%; padding: 14px; border: 2px solid var(--border-color); border-radius: 12px; 
+    font-size: 1rem; background: var(--input-bg); color: var(--text-dark); margin-bottom: 15px; outline: none; transition: 0.3s; 
   }
   input:focus, select:focus { background: var(--card-bg); border-color: #a855f7; }
   
@@ -101,16 +111,18 @@
   .btn-primary { background: var(--primary-gradient); color: white; width: 100%; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
 
   /* TABELAS */
-  .table-responsive { overflow-x: auto; border-radius: 12px; background: rgba(255,255,255,0.05); }
+  .table-responsive { overflow-x: auto; border-radius: 12px; }
   table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  th { background: var(--table-header); color: #6366f1; padding: 15px; text-align: center; }
-  td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; text-align: left; }
+  th { background: var(--th-bg); color: #6366f1; padding: 15px; text-align: center; }
+  td { padding: 15px; border-bottom: 1px solid var(--border-color); vertical-align: middle; text-align: left; }
+  
   tbody tr { transition: 0.2s; }
-  tbody tr:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.005); }
+  tbody tr:hover { background: var(--table-hover); transform: scale(1.005); }
 
-  /* BOTÕES HISTÓRICO */
+  /* BOTÕES HISTÓRICO ALINHADOS */
   .btn-group-action { display: flex; gap: 8px; justify-content: center; }
   .btn-icon { width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; border: none; transition: 0.2s; }
+  .btn-icon:hover { transform: scale(1.1); }
   .btn-print-mini { background: #334155; color: white; }
   .btn-trash-mini { background: #ef4444; color: white; }
 
@@ -118,19 +130,23 @@
   .receber-card {
     background: var(--card-bg); border-left: 5px solid var(--warning);
     border-radius: 12px; padding: 15px; margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s;
   }
   .receber-card:hover { transform: translateX(5px); }
-  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px; }
-  .receber-pedido { font-size: 0.85rem; font-family: 'Share Tech Mono', monospace; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .receber-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+  .receber-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
   .receber-btn { background: #dcfce7; color: #166534; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; border: 1px solid #bbf7d0; }
-  .receber-btn:hover { background: var(--success); color: white; }
 
-  /* MODAL & CUPOM (CUPOM SEMPRE CLARO) */
+  /* CUPOM (SEMPRE CLARO) */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
-  .cupom-box { width: 300px; background: #fffdf0; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #000 !important; border: 1px dashed #ccc; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-  .cupom-box * { color: #000 !important; }
+  .cupom-box { 
+    width: 300px; background: #fffdf0; padding: 15px; 
+    font-family: 'Share Tech Mono', monospace; font-size: 12px; 
+    color: #000 !important; border: 1px dashed #ccc; margin: 0 auto; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+  }
+  .cupom-box * { color: #000 !important; } /* Força preto no cupom */
+  .cupom-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
   .cupom-item { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dotted #ccc; padding-bottom: 5px; margin-bottom: 5px; }
   .cupom-total { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin: 10px 0; font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; }
   
@@ -148,7 +164,7 @@
 
   <nav class="sidebar">
     <div class="logo">
-      <span><i class="fas fa-gem"></i> RE Solution</span>
+      <span>RE Solution</span>
       <i class="fas fa-moon dark-toggle" id="themeBtn" onclick="toggleTheme()"></i>
     </div>
     <button class="menu-btn active" onclick="navegar('dashboard', this)"><i class="fas fa-home"></i> <span>Início</span></button>
@@ -156,6 +172,7 @@
     <button class="menu-btn" onclick="navegar('vendas', this)"><i class="fas fa-shopping-bag"></i> <span>Venda</span></button>
     <button class="menu-btn" onclick="navegar('clientes', this)"><i class="fas fa-user-friends"></i> <span>Clientes</span></button>
     <button class="menu-btn" onclick="navegar('produtos', this)"><i class="fas fa-boxes"></i> <span>Estoque</span></button>
+    <button class="menu-btn" onclick="navegar('perfil', this)"><i class="fas fa-store"></i> <span>Perfil</span></button>
   </nav>
 
   <main class="main-content">
@@ -163,19 +180,13 @@
     <div id="dashboard" class="page active">
       <h2>Visão Geral</h2>
       <div class="grid-3">
-        <div class="card" style="border-left: 4px solid var(--success);"><label>Recebido</label><div class="dash-value" id="dashReceita">R$ 0,00</div></div>
-        <div class="card" style="border-left: 4px solid var(--warning);"><label>A Receber</label><div class="dash-value" id="dashPendente">R$ 0,00</div></div>
-        <div class="card" style="border-left: 4px solid #6366f1;"><label>Total Vendas</label><div class="dash-value" id="dashTotal">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid var(--success);"><label>Recebido</label><div class="dash-value" id="dashReceita" style="color:var(--success)">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid var(--warning);"><label>A Receber</label><div class="dash-value" id="dashPendente" style="color:var(--warning)">R$ 0,00</div></div>
+        <div class="card" style="border-left: 4px solid #6366f1;"><label>Total Vendas</label><div class="dash-value" id="dashTotal" style="color:#6366f1">R$ 0,00</div></div>
       </div>
-
       <div class="card">
-        <h3 style="margin-top:0;">📜 Últimas Vendas</h3>
-        <div class="table-responsive">
-          <table>
-            <thead><tr><th>Pedido</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead>
-            <tbody id="tbHistorico"></tbody>
-          </table>
-        </div>
+        <h3>📜 Últimas Vendas</h3>
+        <div class="table-responsive"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Valor</th><th>Ações</th></tr></thead><tbody id="tbHistorico"></tbody></table></div>
       </div>
     </div>
 
@@ -189,84 +200,85 @@
       <div class="grid-2">
         <div class="card">
           <label>Produto</label>
-          <div class="grid-2" style="gap:15px; margin-bottom:0;">
-            <select id="selProduto"><option>Carregando...</option></select>
-            <input type="number" id="qtdItem" value="1" min="1">
-          </div>
-          <button class="btn-primary" onclick="addCarrinho()" style="background: #f59e0b;">Adicionar</button>
+          <div class="grid-2" style="gap:15px; margin-bottom:0;"><select id="selProduto"></select><input type="number" id="qtdItem" value="1"></div>
+          <button class="btn-primary" onclick="addCarrinho()" style="margin-top:20px; background: #f59e0b;">Adicionar</button>
         </div>
         <div class="card">
-          <h3 style="margin-top:0;">Carrinho</h3>
+          <h3>Carrinho</h3>
           <div class="table-responsive"><table><thead><tr><th>Item</th><th>Qtd</th><th>Sub</th></tr></thead><tbody id="tbCarrinho"></tbody></table></div>
-          <div style="text-align:right; font-size:1.5rem; font-weight:700; margin-top:20px; color:#6366f1;">Total: <span id="totalCarrinho">R$ 0,00</span></div>
+          <h3 id="totalCarrinho" style="text-align:right; color:#6366f1;">Total: R$ 0,00</h3>
         </div>
       </div>
-      <div class="card" id="cardFinalizar" style="display:none; border:2px solid #6366f1;">
+      <div class="card" id="cardFinalizar" style="display:none;">
         <div class="grid-2">
-          <div><label>Cliente</label><select id="selCliente"><option>Selecione...</option></select></div>
-          <div><label>Pagamento</label><select id="tipoPagamento" onchange="toggleCrediario()"><option value="dinheiro">💵 Dinheiro</option><option value="pix">💠 Pix</option><option value="debito">💳 Débito</option><option value="crediario">📅 Crediário</option></select></div>
+          <div><label>Cliente</label><select id="selCliente"></select></div>
+          <div><label>Tipo</label><select id="tipoPagamento" onchange="toggleCrediario()"><option value="dinheiro">Dinheiro</option><option value="pix">Pix</option><option value="crediario">Crediário</option></select></div>
         </div>
-        <div id="areaCrediario" style="display:none; background:rgba(99, 102, 241, 0.05); padding:20px; border-radius:12px; margin-bottom:20px;">
-          <div class="grid-2">
-            <div><label>Parcelas</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option></select></div>
-            <div><label>1ª Parcela</label><input type="date" id="dataPrimeira"></div>
-          </div>
+        <div id="areaCrediario" style="display:none; padding:15px; background:rgba(0,0,0,0.05); border-radius:10px; margin-bottom:15px;">
+           <div class="grid-2"><div><label>Parcelas</label><select id="qtdParcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></div><div><label>Vencimento</label><input type="date" id="dataPrimeira"></div></div>
         </div>
         <button class="btn-primary" onclick="finalizarVenda()">FINALIZAR VENDA</button>
       </div>
     </div>
 
+    <div id="perfil" class="page">
+      <h2>Perfil da Empresa</h2>
+      <div class="card">
+        <label>Nome da Loja</label><input id="empNome" placeholder="RE Solution Store">
+        <div class="grid-2">
+          <div><label>CNPJ / CPF</label><input id="empDoc" placeholder="00.000.000/0001-00"></div>
+          <div><label>Telefone</label><input id="empTel" placeholder="(00) 00000-0000"></div>
+        </div>
+        <label>Endereço</label><input id="empEnd" placeholder="Rua, Número, Bairro, Cidade">
+        <button class="btn-primary" onclick="salvarEmpresa()">SALVAR DADOS</button>
+      </div>
+    </div>
+
     <div id="clientes" class="page">
       <h2>Clientes</h2>
-      <div class="card">
-        <div class="grid-2"><div><label>Nome</label><input id="nomeCli"></div><div><label>WhatsApp</label><input id="telCli"></div></div>
-        <div class="grid-2"><div><label>Email</label><input id="emailCli"></div><div><label>Endereço</label><input id="endCli"></div></div>
-        <button class="btn-primary" onclick="addCliente()">Salvar</button>
-      </div>
-      <div class="card table-responsive"><table><thead><tr><th>Nome</th><th>Tel</th><th>Email</th><th>Ação</th></tr></thead><tbody id="tbClientes"></tbody></table></div>
+      <div class="card"><div class="grid-2"><div><label>Nome</label><input id="nomeCli"></div><div><label>WhatsApp</label><input id="telCli"></div></div><button class="btn-primary" onclick="addCliente()">Salvar</button></div>
+      <div class="card table-responsive"><table><thead><tr><th>Nome</th><th>Tel</th><th>Ação</th></tr></thead><tbody id="tbClientes"></tbody></table></div>
     </div>
 
     <div id="produtos" class="page">
       <h2>Estoque</h2>
-      <div class="card">
-        <div class="grid-3"><div><label>Produto</label><input id="nomeProd"></div><div><label>Preço</label><input id="precoProd" type="number"></div><div><label>Qtd</label><input id="qtdProd" type="number"></div></div>
-        <button class="btn-primary" onclick="addProduto()">Salvar</button>
-      </div>
-      <div class="card table-responsive"><table><thead><tr><th>Produto</th><th>R$</th><th>Qtd</th><th>Ação</th></tr></thead><tbody id="tbProdutos"></tbody></table></div>
+      <div class="card"><div class="grid-3"><div><label>Produto</label><input id="nomeProd"></div><div><label>R$</label><input id="precoProd" type="number"></div><div><label>Qtd</label><input id="qtdProd" type="number"></div></div><button class="btn-primary" onclick="addProduto()">Salvar</button></div>
+      <div class="card table-responsive"><table><thead><tr><th>Produto</th><th>Preço</th><th>Qtd</th><th>Ação</th></tr></thead><tbody id="tbProdutos"></tbody></table></div>
     </div>
   </main>
 
   <div id="modalCupom" class="modal-overlay">
-    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+    <div style="display:flex; flex-direction:column; align-items:center;">
       <div id="areaCupom" class="cupom-box">
         <div class="cupom-header">
-          <div style="font-size:16px; font-weight:bold;">RE SOLUTION</div>
-          <div id="cupomId"></div>
-          <div id="cupomData"></div>
+          <div id="printEmpNome" style="font-size:16px; font-weight:bold;"></div>
+          <div id="printEmpDoc" style="font-size:10px;"></div>
+          <div id="printEmpEnd" style="font-size:10px;"></div>
+          <div id="printEmpTel" style="font-size:10px;"></div>
+          <div style="margin-top:8px; border-top:1px dashed #000; padding-top:5px;">COMPROVANTE</div>
+          <div id="cupomId" style="font-family:monospace"></div>
+          <div id="cupomData" style="font-size:10px;"></div>
         </div>
-        <div style="margin-bottom:5px;">Cliente: <span id="cupomCliente" style="font-weight:bold"></span></div>
-        <div class="cupom-divisoria"></div>
+        <div style="margin-bottom:5px;">CLIENTE: <span id="cupomCliente" style="font-weight:bold"></span></div>
         <div id="cupomLista"></div>
         <div class="cupom-total"><span>TOTAL:</span><span id="cupomTotal"></span></div>
-        <div style="font-size:11px">Pagamento: <span id="cupomPagto"></span></div>
-        <div id="cupomParcelas" style="font-size:11px; margin-top:5px; display:none;"></div>
+        <div id="cupomParcelas" style="font-size:10px; margin-top:5px; display:none;"></div>
       </div>
-      <div class="no-print" style="margin-top:15px; display:flex; flex-direction:column; gap:10px; width:300px;">
-        <button class="btn-share" onclick="compartilharImagem()"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        <button class="btn-primary" style="background:#333;" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
-        <button class="btn-add" style="background:#ef4444;" onclick="fecharCupom()">Fechar</button>
+      <div class="no-print" style="margin-top:15px; display:flex; flex-direction:column; gap:8px; width:300px;">
+        <button class="btn-primary" onclick="window.print()">IMPRIMIR</button>
+        <button class="btn-primary" style="background:#ef4444;" onclick="fecharCupom()">FECHAR</button>
       </div>
     </div>
   </div>
 
 <script>
 const db = { get: k => JSON.parse(localStorage.getItem(k))||[], set: (k,v) => localStorage.setItem(k, JSON.stringify(v)) };
-let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), carrinho = [];
+let clientes = db.get("clientes"), produtos = db.get("produtos"), vendas = db.get("vendas"), empresa = db.get("empresa") || {}, carrinho = [];
 
 window.onload = () => { 
   if(document.getElementById('dataPrimeira')) document.getElementById('dataPrimeira').valueAsDate = new Date(); 
   if(localStorage.getItem('theme') === 'dark') toggleTheme(true);
-  atualizarTudo(); 
+  carregarEmpresa(); atualizarTudo(); 
 };
 
 function toggleTheme(init = false) {
@@ -284,74 +296,71 @@ function toggleTheme(init = false) {
 function formatMoney(n) { return parseFloat(n).toLocaleString('pt-BR',{style:'currency', currency:'BRL'}); }
 function navegar(id, btn) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); if(id === 'areceber') renderAReceber(); }
 
+function salvarEmpresa() { empresa = { nome: document.getElementById("empNome").value, doc: document.getElementById("empDoc").value, tel: document.getElementById("empTel").value, end: document.getElementById("empEnd").value }; db.set("empresa", empresa); alert("Dados Salvos!"); }
+function carregarEmpresa() { document.getElementById("empNome").value = empresa.nome || ""; document.getElementById("empDoc").value = empresa.doc || ""; document.getElementById("empTel").value = empresa.tel || ""; document.getElementById("empEnd").value = empresa.end || ""; }
+
 function addCarrinho() { const i=document.getElementById("selProduto").value, q=parseInt(document.getElementById("qtdItem").value); if(!i||q<1) return; const p=produtos[i]; carrinho.push({idOrigem:i, nome:p.nome, preco:p.preco, qtd:q, sub:p.preco*q}); renderCarrinho(); }
-function renderCarrinho() { const tb=document.getElementById("tbCarrinho"); tb.innerHTML=""; let t=0; carrinho.forEach(c=>{t+=c.sub; tb.innerHTML+=`<tr><td>${c.nome}</td><td>${c.qtd}</td><td>${formatMoney(c.sub)}</td></tr>`}); document.getElementById("totalCarrinho").innerText=formatMoney(t); document.getElementById("cardFinalizar").style.display=t>0?'block':'none'; }
+function renderCarrinho() { const tb=document.getElementById("tbCarrinho"); tb.innerHTML=""; let t=0; carrinho.forEach(c=>{t+=c.sub; tb.innerHTML+=`<tr><td>${c.nome}</td><td>${c.qtd}</td><td>${formatMoney(c.sub)}</td></tr>`}); document.getElementById("totalCarrinho").innerText="Total: "+formatMoney(t); document.getElementById("cardFinalizar").style.display=t>0?'block':'none'; }
 function toggleCrediario() { document.getElementById("areaCrediario").style.display=document.getElementById("tipoPagamento").value==='crediario'?'block':'none'; }
 
 function finalizarVenda() {
-  const cliIdx=document.getElementById("selCliente").value; if(!cliIdx) return alert("Selecione Cliente");
-  const total=carrinho.reduce((a,b)=>a+b.sub,0), tipo=document.getElementById("tipoPagamento").value;
-  let parcelas=[];
-  if(tipo==='crediario') {
-    const qtd=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value; if(!dt) return alert("Data?"); let db_date=new Date(dt+'T12:00:00');
-    for(let i=0;i<qtd;i++) { let d=new Date(db_date); d.setMonth(d.getMonth()+i); parcelas.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:total/qtd, paga:false}); }
+  const cliIdx=document.getElementById("selCliente").value; if(!cliIdx) return alert("Cliente?");
+  const t=carrinho.reduce((a,b)=>a+b.sub,0), tipo=document.getElementById("tipoPagamento").value;
+  let par=[]; if(tipo==='crediario') {
+    const q=parseInt(document.getElementById("qtdParcelas").value), dt=document.getElementById("dataPrimeira").value;
+    let d_base=new Date(dt+'T12:00:00'); for(let i=0;i<q;i++) { let d=new Date(d_base); d.setMonth(d.getMonth()+i); par.push({num:i+1, data:d.toLocaleDateString('pt-BR'), valor:t/q, paga:false}); }
   }
   carrinho.forEach(x=>produtos[x.idOrigem].qtd-=x.qtd); db.set("produtos",produtos);
-  const idV = '#' + Date.now().toString().slice(-4);
-  const v = {id:Date.now(), idVisivel: idV, cliente:clientes[cliIdx].nome, total, tipo, parcelas, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
+  const v = {id:Date.now(), idVisivel: '#'+Date.now().toString().slice(-4), cliente:clientes[cliIdx].nome, total:t, tipo, parcelas:par, itens:[...carrinho], dataVenda:new Date().toLocaleString('pt-BR')};
   vendas.unshift(v); db.set("vendas",vendas); gerarCupom(v); carrinho=[]; renderCarrinho(); atualizarTudo();
 }
 
 function gerarCupom(v) {
+  document.getElementById("printEmpNome").innerText = empresa.nome || "RE SOLUTION";
+  document.getElementById("printEmpDoc").innerText = empresa.doc || "";
+  document.getElementById("printEmpEnd").innerText = empresa.end || "";
+  document.getElementById("printEmpTel").innerText = empresa.tel || "";
   document.getElementById("cupomId").innerText = "PEDIDO " + v.idVisivel; document.getElementById("cupomData").innerText = v.dataVenda;
   document.getElementById("cupomCliente").innerText = v.cliente; document.getElementById("cupomTotal").innerText = formatMoney(v.total);
-  document.getElementById("cupomPagto").innerText = v.tipo.toUpperCase();
-  const lista = document.getElementById("cupomLista"); lista.innerHTML = "";
-  v.itens.forEach(i => { lista.innerHTML += `<div class="cupom-item"><div class="c-info"><span class="c-nome">${i.nome}</span><span>${i.qtd} x ${formatMoney(i.preco)}</span></div><div class="c-valor"><b>${formatMoney(i.sub)}</b></div></div>`; });
-  const divP = document.getElementById("cupomParcelas");
-  if(v.tipo === 'crediario') { divP.style.display='block'; divP.innerHTML="<strong>Parcelas:</strong><br>"; v.parcelas.forEach(p => divP.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else divP.style.display='none';
+  const l = document.getElementById("cupomLista"); l.innerHTML = "";
+  v.itens.forEach(i => { l.innerHTML += `<div class="cupom-item"><div class="c-info"><span class="c-nome">${i.nome}</span><span>${i.qtd} x ${formatMoney(i.preco)}</span></div><div class="c-valor"><b>${formatMoney(i.sub)}</b></div></div>`; });
+  const dp = document.getElementById("cupomParcelas");
+  if(v.tipo === 'crediario') { dp.style.display='block'; dp.innerHTML="<b>Parcelas:</b><br>"; v.parcelas.forEach(p => dp.innerHTML += `${p.num}x ${p.data} - ${formatMoney(p.valor)}<br>`); } else dp.style.display='none';
   document.getElementById("modalCupom").style.display = "flex";
 }
 
 function renderAReceber() {
-  const container = document.getElementById("listaRecebimentos"); container.innerHTML = ""; let tem = false;
-  vendas.forEach((v, vIdx) => {
-    if(v.tipo === 'crediario') {
-      const pends = v.parcelas.map((p, pIdx) => ({...p, pIdx})).filter(p => !p.paga);
-      if(pends.length > 0) {
-        tem = true;
-        let h = ""; pends.forEach(p => h += `<div class="receber-item"><div>${p.num}ª Parc - ${p.data}<br><b>${formatMoney(p.valor)}</b></div><button class="receber-btn" onclick="baixarParc(${vIdx}, ${p.pIdx})">PAGO</button></div>`);
-        const c = document.createElement('div'); c.className = "receber-card";
-        c.innerHTML = `<div class="receber-header"><b>${v.cliente}</b><span class="receber-pedido">${v.idVisivel}</span></div><div>${h}</div>`;
-        container.appendChild(c);
-      }
+  const container = document.getElementById("listaRecebimentos"); container.innerHTML = "";
+  vendas.forEach((v, vI) => { if(v.tipo === 'crediario') {
+    const pends = v.parcelas.map((p, pI) => ({...p, pI})).filter(p => !p.paga);
+    if(pends.length > 0) {
+      let h = ""; pends.forEach(p => h += `<div class="receber-item"><div>${p.num}ª Parc - ${p.data}<br><b>${formatMoney(p.valor)}</b></div><button class="receber-btn" onclick="baixarParc(${vI}, ${p.pI})">PAGO</button></div>`);
+      const c = document.createElement('div'); c.className = "receber-card";
+      c.innerHTML = `<div class="receber-header"><b>${v.cliente}</b><span>${v.idVisivel}</span></div>${h}`;
+      container.appendChild(c);
     }
-  });
-  if(!tem) container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-light);">Nada pendente!</div>';
+  }});
 }
 
 function baixarParc(vI, pI) { if(confirm("Confirmar?")) { vendas[vI].parcelas[pI].paga = true; db.set("vendas", vendas); renderAReceber(); atualizarDashboard(); } }
 function fecharCupom() { document.getElementById("modalCupom").style.display = "none"; navegar('dashboard', document.querySelector('.menu-btn')); }
-function compartilharImagem() { html2canvas(document.getElementById("areaCupom")).then(canvas => { canvas.toBlob(blob => { const file = new File([blob], "cupom.png", { type: "image/png" }); if (navigator.share) navigator.share({ title: 'Cupom', files: [file] }); }); }); }
-function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value, e=document.getElementById("emailCli").value, en=document.getElementById("endCli").value; if(n){clientes.push({nome:n, tel:t, email:e, end:en}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo"); document.getElementById("nomeCli").value="";} }
-function addProduto() { const n=document.getElementById("nomeProd").value, p=document.getElementById("precoProd").value, q=document.getElementById("qtdProd").value; if(n){produtos.push({nome:n, preco:p, qtd:q}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo"); document.getElementById("nomeProd").value="";} }
+function addCliente() { const n=document.getElementById("nomeCli").value, t=document.getElementById("telCli").value; if(n){clientes.push({nome:n, tel:t}); db.set("clientes",clientes); atualizarTudo(); alert("Salvo");} }
+function addProduto() { const n=document.getElementById("nomeProd").value, p=document.getElementById("precoProd").value, q=document.getElementById("qtdProd").value; if(n){produtos.push({nome:n, preco:p, qtd:q}); db.set("produtos",produtos); atualizarTudo(); alert("Salvo");} }
 function deletar(t,i) { if(confirm("Apagar?")){ if(t==='c') clientes.splice(i,1); else produtos.splice(i,1); db.set("clientes",clientes); db.set("produtos",produtos); atualizarTudo();} }
-function deletarVenda(idx) { if(confirm("Excluir?")){ vendas.splice(idx,1); db.set("vendas",vendas); atualizarTudo(); } }
-function reimprimirVenda(idx) { gerarCupom(vendas[idx]); }
+function deletarVenda(i) { if(confirm("Excluir?")){ vendas.splice(i,1); db.set("vendas",vendas); atualizarTudo(); } }
 
 function atualizarDashboard() { 
   let c=0, p=0, t=0; vendas.forEach(v=>{ t+=v.total; if(v.tipo!=='crediario') c+=v.total; else v.parcelas.forEach(px=>{if(px.paga) c+=px.valor; else p+=px.valor}) }); 
   document.getElementById("dashReceita").innerText=formatMoney(c); document.getElementById("dashPendente").innerText=formatMoney(p); document.getElementById("dashTotal").innerText=formatMoney(t); 
-  const tbHist = document.getElementById("tbHistorico"); tbHist.innerHTML="";
-  vendas.slice(0, 10).forEach((v, i) => {
-    tbHist.innerHTML += `<tr><td style="text-align:center;font-weight:bold">${v.idVisivel}</td><td>${v.cliente}</td><td style="text-align:center">${formatMoney(v.total)}</td><td><div class="btn-group-action"><button class="btn-icon btn-print-mini" onclick="reimprimirVenda(${i})"><i class="fas fa-print"></i></button><button class="btn-icon btn-trash-mini" onclick="deletarVenda(${i})"><i class="fas fa-trash"></i></button></div></td></tr>`;
-  });
+  const th = document.getElementById("tbHistorico"); th.innerHTML="";
+  vendas.slice(0, 10).forEach((v, i) => { th.innerHTML += `<tr><td style="text-align:center;font-weight:bold">${v.idVisivel}</td><td>${v.cliente}</td><td style="text-align:center">${formatMoney(v.total)}</td><td style="text-align:center"><div class="btn-group-action"><button class="btn-icon btn-print-mini" onclick="gerarCupom(vendas[${i}])"><i class="fas fa-print"></i></button><button class="btn-icon btn-trash-mini" onclick="deletarVenda(${i})"><i class="fas fa-trash"></i></button></div></td></tr>`; });
 }
+
 function atualizarTudo() { 
   atualizarDashboard(); 
   const sc=document.getElementById("selCliente"); sc.innerHTML="<option value=''>Cliente...</option>"; clientes.forEach((c,i)=>sc.innerHTML+=`<option value="${i}">${c.nome}</option>`); 
   const sp=document.getElementById("selProduto"); sp.innerHTML="<option value=''>Produto...</option>"; produtos.forEach((p,i)=>sp.innerHTML+=`<option value="${i}">${p.nome}</option>`); 
-  const tc=document.getElementById("tbClientes"); tc.innerHTML=""; clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td style="text-align:center">${c.tel}</td><td>${c.email||'-'}</td><td style="text-align:center"><button onclick="deletar('c',${i})">X</button></td></tr>`); 
+  const tc=document.getElementById("tbClientes"); tc.innerHTML=""; clientes.forEach((c,i)=>tc.innerHTML+=`<tr><td>${c.nome}</td><td style="text-align:center">${c.tel}</td><td style="text-align:center"><button onclick="deletar('c',${i})">X</button></td></tr>`); 
   const tp=document.getElementById("tbProdutos"); tp.innerHTML=""; produtos.forEach((p,i)=>tp.innerHTML+=`<tr><td>${p.nome}</td><td style="text-align:center">${formatMoney(p.preco)}</td><td style="text-align:center">${p.qtd}</td><td style="text-align:center"><button onclick="deletar('p',${i})">X</button></td></tr>`); 
 }
 </script>
